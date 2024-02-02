@@ -1,0 +1,24 @@
+{
+  "name": "npm-root",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "workspaces": [
+    "../mfe-shell",
+    "../mfe-api-mockup"
+  ],
+  "scripts": {
+    "app:api": "npm run dev --workspace=../mfe-api-mockup",
+    "app:shell": "npm run dev --workspace=../mfe-shell",
+    "app:htmx": "npm run dev --workspace=../mfe-htmx",
+    "dev:shell": "concurrently \"npm run app:api\" \"npm run app:shell\"",
+    "dev:htmx": "concurrently \"npm run app:api\" \"npm run app:htmx\"",
+    "dev": "concurrently npm:app:*"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

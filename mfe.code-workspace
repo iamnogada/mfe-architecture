@@ -1,12 +1,19 @@
 {
 	"folders": [
 		{
+			"name": "npm-root",
+			"path": "npm-root"
+		},
+		{
+			"name": "mfe-shell",
 			"path": "mfe-shell"
 		},
 		{
+			"name": "mfe-api-mockup",
 			"path": "mfe-api-mockup"
 		},
 		{
+			"name": "mfe-htmx",
 			"path": "mfe-htmx"
 		}
 	],
