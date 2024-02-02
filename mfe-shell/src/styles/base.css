@@ -1,0 +1,9 @@
+/* src/styles/baseStyles.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+div.red {
+  @apply bg-red-500;
+}

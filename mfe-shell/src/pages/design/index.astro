@@ -1,0 +1,61 @@
+---
+import Layout from '@layouts/SampleLayout.astro';
+---
+
+<Layout>
+  <section x-data>
+    <h1 class="divider divider-start text-xl font-semibold mb-2">
+      Button Style
+    </h1>
+    <div class="grid grid-cols-5 gap-4 p-6">
+      <button class="btn btn-primary" x-on:click="displayCode($event.target)">primary</button>
+      <button class="btn btn-secondary">secondary</button>
+      <button class="btn btn-accent">accent</button>
+      <button class="btn btn-neutral">neutral</button>
+      <button class="btn">default</button>
+
+      <button class="btn btn-primary btn-outline">primary</button>
+      <button class="btn btn-secondary btn-outline">secondary</button>
+      <button class="btn btn-accent btn-outline">accent</button>
+      <button class="btn btn-neutral btn-outline">neutral</button>
+      <button class="btn btn-base-300 btn-outline">default</button>
+
+      <button class="btn btn-info col-start-1">info</button>
+      <button class="btn btn-success">success</button>
+      <button class="btn btn-warning">warning</button>
+      <button class="btn btn-error col-start-4">error</button>
+
+      <button class="btn btn-info btn-outline col-start-1">info</button>
+      <button class="btn btn-success btn-outline">success</button>
+      <button class="btn btn-warning btn-outline">warning</button>
+      <button class="btn btn-error btn-outline">error</button>
+      <button class="btn btn-primary btn-ghost col-start-1">ghost</button>
+      <button class="btn btn-secondary btn-link">link</button>
+    </div>
+  </section>
+  <dialog id="my_modal" class="modal">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg">Hello!</h3>
+      <p class="py-4">Press ESC key or click the button below to close</p>
+      <div class="modal-action">
+        <form method="dialog">
+          <!-- if there is a button in form, it will close the modal -->
+          <button class="btn">Close</button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+</Layout>
+
+<script is:inline>
+  const displayCode = (el) => {
+    const code = el.outerHTML;
+    const modal = document.getElementById('my_modal');
+    modal.showModal();
+    modal.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        modal.close();
+      }
+    });
+  };
+</script>

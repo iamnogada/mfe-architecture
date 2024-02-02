@@ -1,0 +1,25 @@
+---
+import '../styles/base.css';
+
+const { title = 'ZMP' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/assets/css/fontawesome.all.css" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <script defer src="/js/alpinejs.3.x.min.js"></script>
+  </head>
+</html>
+<body data-theme="zmp">
+  <div class="p-6">
+    <slot />
+  </div>
+</body>
+
