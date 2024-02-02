@@ -5,12 +5,12 @@
 			"path": "npm-root"
 		},
 		{
-			"name": "mfe-shell",
-			"path": "mfe-shell"
-		},
-		{
 			"name": "mfe-api-mockup",
 			"path": "mfe-api-mockup"
+		},
+		{
+			"name": "mfe-shell",
+			"path": "mfe-shell"
 		},
 		{
 			"name": "mfe-htmx",
