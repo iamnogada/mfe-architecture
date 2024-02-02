@@ -1,5 +1,71 @@
 ---
+let todos = [];
 
+try {
+  todos = await (await fetch('http://localhost:3000/todos')).json();
+} catch (error) {
+  console.log(error);
+}
 ---
 
-<div>Todo list</div>
+<section class="container">
+  <div class="flex flex-col h-20 p-2 text-md bg-neutral">
+    <div
+      class="flex justify-center items-center flex-grow text-neutral-content text-xl font-bold"
+    >
+      Todo Summary
+    </div>
+  </div>
+  <div class="p-4">
+    <form class="grid grid-cols-[1fr,5fr,1fr] grid-flow-col gap-2">
+      <div><label for="todo" class="mb-2 text-gray-900">Todo</label></div>
+      <div>
+        <label for="category" class="mb-2 text-gray-900">Category</label>
+      </div>
+      <div>
+        <textarea
+          id="todo"
+          name="todo"
+          placeholder="Enter your todo"
+          class="textarea textarea-bordered w-full"></textarea>
+      </div>
+      <div>
+        <select
+          id="category"
+          name="category"
+          class="select select-bordered w-full"
+        >
+          <option value="">Select a category</option>
+          <option value="shopping">Shopping</option>
+          <option value="work">Work</option>
+          <option value="personal">Personal</option>
+        </select>
+      </div>
+      <div class="row-span-2 border-0">
+        <button type="submit" class="w-full h-full btn btn-accent"
+          >Submit</button
+        >
+      </div>
+    </form>
+  </div>
+  <div class="p-4">
+    <div class="grid grid-cols-[4rem,1fr,8rem] border-y-[1px] h-14">
+      <div class="flex justify-center items-center">No</div>
+      <div class="border-l-[1px] flex justify-center items-center">Todo</div>
+      <div class="border-l-[1px] flex justify-center items-center">Action</div>
+    </div>
+    {
+      todos.map((todo) => (
+        <div class="grid grid-cols-[4rem,1fr,8rem] border-b-[1px] h-12">
+          <div class="flex justify-center items-center">{todo.id}</div>
+          <div class="border-l-[1px] flex justify-start items-center px-2">
+            {todo.todo}
+          </div>
+          <div class="border-l-[1px] flex justify-center items-center">
+            <button class="btn btn-sm btn-primary">Edit</button>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>

@@ -5,8 +5,12 @@ import TodoList from '@components/TodoList.astro';
 ---
 
 <Layout title="Htmx App">
-  <main>
-  <TodoCategorySummary />
-  <TodoList />
-</main>
+  <main class="flex flex-rows gap-3 justify-stretch">
+    <div class="w-1/4">
+      <TodoCategorySummary />
+    </div>
+    <div class="flex-grow ">
+      <TodoList />
+    </div>
+  </main>
 </Layout>

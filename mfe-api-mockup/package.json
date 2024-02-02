@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "copy:data": "if [ ! -f ./data/todos.json ]; then cp ./mockupdata/todos.json ./data/todos.json; fi",
-    "dev":"npx json-server --watch ./data/todos.json --port 3000",
+    "dev":"npx json-server --watch ./data/todos.json --port 3000 ",
     "start": "npm run copy:data  && npm run dev"
   },
   "keywords": [],
