@@ -1,6 +1,6 @@
 # Readmd
-[shell](./mfe-shell/Readme.md)
-[htmx project](./mfe-htmx/Readme.md)
-[api mockup](./mfe-api-mockup/Readme.md)
+[shell](./mfe-shell/README.md)
+[htmx project](./mfe-htmx/README.md)
+[api mockup](./mfe-api-mockup/README.md)
 
 
