@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "mfe-shell"
+		},
+		{
+			"path": "mfe-api-mockup"
+		},
+		{
+			"path": "mfe-htmx"
+		}
+	],
+	"settings": {}
+}
