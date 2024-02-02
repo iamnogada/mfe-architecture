@@ -17,5 +17,7 @@
 			"path": "mfe-htmx"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "mfe-htmx"
+	}
 }
