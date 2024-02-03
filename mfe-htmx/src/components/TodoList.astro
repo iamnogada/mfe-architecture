@@ -51,20 +51,19 @@ try {
   <div class="p-4">
     <div class="grid grid-cols-[4rem,1fr,8rem] border-y-[1px] h-14">
       <div class="flex justify-center items-center">No</div>
-      <div class="border-l-[1px] flex justify-center items-center">Todo</div>
+      <div class="border-l-[1px] flex justify-center items-center truncate">Todo</div>
       <div class="border-l-[1px] flex justify-center items-center">Action</div>
     </div>
     {
       todos.map((todo) => (
-        <div class="grid grid-cols-[4rem,1fr,8rem] border-b-[1px] h-12">
+      <div class="grid grid-cols-[4rem,1fr,8rem] border-b-[1px] h-14">
           <div class="flex justify-center items-center">{todo.id}</div>
           <div class="border-l-[1px] flex justify-start items-center px-2">
             {todo.todo}
           </div>
           <div class="border-l-[1px] flex justify-center items-center">
             <button class="btn btn-sm btn-primary">Edit</button>
-          </div>
-        </div>
+          </div></div>
       ))
     }
   </div>
