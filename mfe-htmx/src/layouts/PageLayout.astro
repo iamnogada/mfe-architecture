@@ -1,11 +1,9 @@
 ---
 import '../styles/base.css';
 
-const { title = 'ZMP' ,mode=''} = Astro.props;
-const isDev = import.meta.env.MODE === 'development' ? true : false;
-
+const { title = 'ZMP' } = Astro.props;
 ---
-{isDev ? (
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -13,16 +11,16 @@ const isDev = import.meta.env.MODE === 'development' ? true : false;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/assets/css/fontawesome.all.css" />
-    <link rel="stylesheet" href="/css/base.css" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <script src="/js/htmx.min.js" is:inline></script>
+    
     <script src="/js/handlebars.js" is:inline></script>
-    <script defer src="/js/alpinejs.3.x.min.js" is:inline></script>
+    <script defer src="/js/alpinejs.3.x.min.js"></script>
   </head>
 
-  <body >
-    <div class="w-screen h-screen p-2">
+  <body data-theme="zmp">
+    <div class="p-2 h-screen w-screen">
       <slot />
     </div>
     <script is:inline>
@@ -32,7 +30,3 @@ const isDev = import.meta.env.MODE === 'development' ? true : false;
     ></script>
   </body>
 </html>
-):(<slot />)}
-
-
-

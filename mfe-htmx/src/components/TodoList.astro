@@ -1,8 +1,7 @@
 ---
 let todos = [];
-
 try {
-  todos = await (await fetch('http://localhost:3000/todos')).json();
+  todos = []; //await (await fetch('http://localhost:3000/todos')).json();
 } catch (error) {
   console.log(error);
 }
@@ -17,7 +16,7 @@ try {
     </div>
   </div>
   <div class="p-4">
-    <form class="grid grid-cols-[1fr,5fr,1fr] grid-flow-col gap-2">
+    <form class="  grid-cols-[1fr,5fr,1fr] grid-flow-col gap-2 grid">
       <div><label for="todo" class="mb-2 text-gray-900">Todo</label></div>
       <div>
         <label for="category" class="mb-2 text-gray-900">Category</label>
@@ -48,23 +47,36 @@ try {
       </div>
     </form>
   </div>
-  <div class="p-4">
-    <div class="grid grid-cols-[4rem,1fr,8rem] border-y-[1px] h-14">
+  <div class="p-4" hx-ext="client-side-templates">
+    <div
+      class="grid grid-cols-[4rem,1fr,8rem] border-y-[1px] h-14"
+      hx-get="/api/todos"
+      hx-trigger="load"
+      hx-swap="outerHTML"
+      hx-target="#todo-list"
+      handlebars-template="todo-list-template"
+    >
       <div class="flex justify-center items-center">No</div>
-      <div class="border-l-[1px] flex justify-center items-center truncate">Todo</div>
+      <div class="border-l-[1px] flex justify-center items-center truncate">
+        Todo
+      </div>
       <div class="border-l-[1px] flex justify-center items-center">Action</div>
     </div>
-    {
-      todos.map((todo) => (
+    <div id="todo-list"></div>
+    <template id="todo-list-template">
+      {'{{#each this}}'}
       <div class="grid grid-cols-[4rem,1fr,8rem] border-b-[1px] h-14">
-          <div class="flex justify-center items-center">{todo.id}</div>
-          <div class="border-l-[1px] flex justify-start items-center px-2">
-            {todo.todo}
-          </div>
-          <div class="border-l-[1px] flex justify-center items-center">
-            <button class="btn btn-sm btn-primary">Edit</button>
-          </div></div>
-      ))
-    }
+        <div class="flex justify-center items-center">{'{{this.id}}'}</div>
+        <div class="border-l-[1px] flex justify-start items-center px-2">
+          {'{{this.todo}}'}
+        </div>
+        <div class="border-l-[1px] flex justify-center items-center">
+          <button class="btn btn-sm btn-primary">Edit</button>
+        </div>
+      </div>
+      {'{{/each}}'}
+    </template>
   </div>
+
+  
 </section>

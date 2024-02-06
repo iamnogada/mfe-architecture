@@ -1,8 +1,8 @@
 import { defineConfig } from 'astro/config';
 import node from '@astrojs/node';
 import alpinejs from '@astrojs/alpinejs';
-import htmx from 'astro-htmx';
 import tailwind from '@astrojs/tailwind';
+// import htmx from 'astrojs-htmx';
 
 
 
@@ -15,7 +15,7 @@ export default defineConfig({
   adapter: node({
     mode: 'standalone'
   }),
-  integrations: [ alpinejs(), tailwind(), htmx()]
+  integrations: [ tailwind(), alpinejs()]
   // vite: {
   //   server: {
   //     proxy: {

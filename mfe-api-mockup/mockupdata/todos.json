@@ -2,27 +2,27 @@
   "categories": [
     {
       "id": 1,
-      "category": "Shopping"
+      "name": "Shopping"
     },
     {
       "id": 2,
-      "category": "Leisure"
+      "name": "Leisure"
     },
     {
       "id": 3,
-      "category": "Health"
+      "name": "Health"
     },
     {
       "id": 4,
-      "category": "Household"
+      "name": "Household"
     },
     {
       "id": 5,
-      "category": "Work"
+      "name": "Work"
     },
     {
       "id": 6,
-      "category": "Other"
+      "name": "Other"
     }
   ],
   "todos": [

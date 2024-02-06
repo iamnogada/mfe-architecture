@@ -1,0 +1,146 @@
+---
+interface IReponseData {
+  first?: number;
+  prev?: number;
+  next?: number;
+  last?: number;
+  pages?: number;
+  items?: number;
+  data?: [];
+}
+export const partial = true;
+import Layout from '@layouts/Layout.astro';
+
+const size = 3;
+const url = new URL(Astro.request.url);
+const params = new URLSearchParams(url.search);
+let currentPage = parseInt(params.get('page'), 10) || 1;
+currentPage = Math.max(1, currentPage);
+
+let todos = [];
+let response: IReponseData = {};
+try {
+  response = await (
+    await fetch(
+      `http://localhost:3000/todos?_page=${currentPage}&_per_page=${size}`
+    )
+  ).json();
+  todos = response.data;
+} catch (error) {
+  console.log(error);
+}
+
+const pageGroup = (Math.ceil(currentPage / 10)-1)*10+1;
+let prev = {
+  status: false,
+  href:"#"
+};
+let next = {
+  status: false,
+  href:"#"
+};
+if(pageGroup < 11){
+  prev.status = false;
+  prev.href = `#`;
+}else{
+  prev.status = true;
+  prev.href = `./list?page=${pageGroup-1}`;
+}
+if(pageGroup+9 >= response.pages){
+  next.status = false;
+  next.href = `#`;
+}else{
+  next.status = true;
+  next.href = `./list?page=${pageGroup+10}`;
+}
+
+let pageButtons = Array(10)
+  .fill({})
+  .map((_, i) => ({
+    num: i + pageGroup,
+    type:
+      i + pageGroup == currentPage
+        ? 'self'
+        : i + pageGroup <= response.pages
+          ? 'btn'
+          : 'text'
+  }));
+
+
+---
+
+<Layout>
+  <div class="flex items-center justify-between mb-4">
+    <div>
+      <span class="text-sm font-medium text-gray-700">
+        showing {currentPage} of {response.pages} pages({pageGroup})
+      </span>
+    </div>
+    <div class="inline-flex">
+      {
+        prev.status ? (
+          <a href={prev.href} class="hover:bg-gray-300 px-3 py-1 text-gray-800 bg-gray-200 border border-r-0 rounded-l">
+            Prev
+          </a>
+        ) : (
+          <div class=" px-3 py-1 text-gray-400 bg-gray-200 border border-r-0 rounded-l">
+            Prev
+          </div>
+        )
+      }
+      {
+        pageButtons.map((item) =>
+          item.type === 'btn' ? (
+            <button class="hover:bg-blue-300 px-3 py-1 text-gray-800 bg-blue-200 border">
+              {item.num}
+            </button>
+          ) : item.type === 'self' ? (
+            <div class="hover:bg-blue-300 px-3 py-1 font-bold text-gray-800 bg-blue-200 border">
+              {item.num}
+            </div>
+          ) : (
+            <div class="hover:bg-gray-300 px-3 py-1 text-gray-800 bg-gray-200 border">
+              {item.num}
+            </div>
+          )
+        )
+      }
+      {
+        next.status ? (
+          <a href={next.href} class="hover:bg-gray-300 px-3 py-1 text-gray-800 bg-gray-200 border">
+            Next
+          </a>
+        ) : (
+          <div class=" px-3 py-1 text-gray-400 bg-gray-200 border">Next</div>
+        )
+      }
+    </div>
+  </div>
+
+  <table class="w-full">
+    <thead class="bg-primary border-t">
+      <tr>
+        <th class="text-centerp-2 w-12">Id</th>
+        <!-- 3rem width -->
+        <th class="flex-grow p-2 text-left">Todo</th>
+        <th class="w-32 p-2 text-center">Action</th>
+        <!-- 5rem width -->
+      </tr>
+    </thead>
+    <tbody>
+      {
+        todos.map((todo) => (
+          <tr class="last:border-b border-t border-gray-300">
+            <td class="p-2 text-center">{todo.id}</td>
+            <td class="p-2 break-words">{todo.todo}</td>
+            <td class="flex justify-center p-2 text-center">
+              <button class="hover:bg-red-900/50 focus:outline-none focus:shadow-outline px-2 py-1 font-bold text-white bg-red-900 rounded">
+                Update
+              </button>
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</Layout>

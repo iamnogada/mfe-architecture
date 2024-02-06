@@ -1,0 +1,53 @@
+---
+export const partial = true;
+
+let completedCount = 0;
+let total = 0;
+let categoriesCount = [];
+let categories = [];
+
+try {
+  categories = await (await fetch('http://localhost:3000/categories')).json();
+  const todos = await (await fetch('http://localhost:3000/todos')).json();
+
+  total = todos.length;
+  completedCount = 0;
+  categoriesCount = [];
+
+  categories.forEach((category) => {
+    categoriesCount[category.id] = 0;
+  });
+
+  todos.forEach((todo) => {
+    categoriesCount[todo.categoryId] += 1;
+    if (todo.completed) {
+      completedCount += 1;
+    }
+  });
+} catch (error) {
+  console.error(error);
+}
+---
+
+<section>
+  <div class="max-w-lg mx-auto border rounded-lg">
+    <div class="flex justify-between items-center h-16 bg-info text-lg font-bold px-4 rounded-t-lg">
+      <p>List Header</p>
+      <span class="bg-slate-200 text-neutral py-1 px-3 w-12 text-center rounded-full text-sm">
+        {completedCount}/{total}
+      </span>
+    </div>
+    <ul class="list-none p-0 m-0">
+      {
+        categories.map((category) => (
+          <li class="flex justify-between items-center bg-white px-4 py-2 border-t mb-0 last:rounded-b-lg">
+            <span>{category.name}</span>
+            <span class="bg-blue-500 text-white py-1 px-3 rounded-full text-sm">
+              {categoriesCount[category.id]}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
