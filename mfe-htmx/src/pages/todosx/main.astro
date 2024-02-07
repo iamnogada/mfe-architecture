@@ -1,0 +1,29 @@
+---
+import Partial from '@layouts/Partial.astro';
+import TodoCategorySummary from '@pages/todosx/category/summary.astro';
+import TodoList from "@pages/todosx/list.astro";
+import TodoRegister from "@pages/todosx/register.astro";
+
+export const partial = true;
+
+// const url = new URL(Astro.url);
+// console.log(url.pathname);
+
+// if('/' != url.pathname.slice(-1)) return Astro.redirect(`${url.pathname}/`);
+
+---
+
+<Partial>
+  <main class="flex-rows justify-stretch flex gap-3">
+    <div class="w-1/4">
+      <TodoCategorySummary />
+    </div>
+    <div class=" flex-grow">
+      <div class="bg-info flex items-center justify-between h-16 px-4 text-lg font-bold border rounded-t-lg">
+        <p>Todo Information</p>
+      </div>
+      <TodoRegister />
+      <TodoList />
+    </div>
+  </main>
+</Partial>

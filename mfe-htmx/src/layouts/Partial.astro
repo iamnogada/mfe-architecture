@@ -18,11 +18,12 @@ const isDev = import.meta.env.MODE === 'development' ? true : false;
     <title>{title}</title>
     <script src="/js/htmx.min.js" is:inline></script>
     <script src="/js/handlebars.js" is:inline></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
     <script defer src="/js/alpinejs.3.x.min.js" is:inline></script>
   </head>
 
   <body >
-    <div class="w-screen h-screen p-2">
+    <div class="">
       <slot />
     </div>
     <script is:inline>

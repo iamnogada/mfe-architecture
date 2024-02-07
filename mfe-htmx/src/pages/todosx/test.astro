@@ -1,0 +1,59 @@
+---
+export const partial = true;
+
+import Layout from '@layouts/Partial.astro';
+---
+
+<Layout>
+  <h1>Partial Layout</h1>
+  <div>
+    <button
+      hx-post="./update"
+      hx-include="[name='email'],[name='kinds']"
+      hx-select="#ddd"
+      hx-push-url="true"
+      class="border"
+      hx-swap="outerHTML"
+    >
+      Register!
+    </button>
+    Enter email:
+    <input class="border" name="email" />hello
+  </div>
+  <select class="border" name="kinds">
+    <option value="or">orange</option>
+    <option value="ap">apple</option>
+  </select>
+  <div x-data="{postURL:'./update?page=0'}" x-init="console.log('being initialized!')">
+    <button
+      id="holder"
+      x-bind:hx-post=`postURL`
+      hx-trigger="my-custom-event"
+      hx-target="#content"
+      hx-swap="innerHTML"
+      >click me</button
+    >
+    <div id="content"></div>
+    <input x-ref="paging"  name="page" x-model="postURL"/>
+    <button
+    id="myButton"
+    @click="htmx.trigger('#holder', 'my-custom-event')"
+    >button</button
+  >
+  </div>
+  
+  <script is:inline>
+    // const customEvent = new Event('my-custom-event');
+    //hx-on::config-request="event.detail.path=`${event.detail.path}?${event.detail.triggeringEvent.detail.filter}`"
+    //hx-on:my-custom-event="this.setAttribute('hx-post', event.detail.page)"
+    // const button = document.getElementById('myButton');
+    //hx-on:my-custom-event="alert('dd')"
+    //hx-on:my-custom-event="alert(event.detail.page)"
+    //hx-on:my-custom-event="alert(this.id)"
+    // // Add a click listener to the button to dispatch the event
+    // button.addEventListener('click', function () {
+    //     htmx.trigger('#holder', 'my-custom-event',{name: 'John'});
+    // });
+  </script>
+
+</Layout>

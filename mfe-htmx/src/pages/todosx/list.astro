@@ -9,27 +9,32 @@ interface IReponseData {
   data?: [];
 }
 export const partial = true;
-import Layout from '@layouts/Layout.astro';
+import Partial from '@layouts/Partial.astro';
 
-const size = 3;
+const size = 10;
 const url = new URL(Astro.request.url);
 const params = new URLSearchParams(url.search);
 let currentPage = parseInt(params.get('page'), 10) || 1;
+let categoryId = params.get('categoryId') || '';
+const filter = !!categoryId ? `&categoryId=${categoryId}`:"";
 currentPage = Math.max(1, currentPage);
+
+console.log(`cat: ${categoryId}, filter: ${filter}`);
+
 
 let todos = [];
 let response: IReponseData = {};
 try {
   response = await (
     await fetch(
-      `http://localhost:3000/todos?_page=${currentPage}&_per_page=${size}`
+      `http://localhost:3000/todos?_page=${currentPage}&_per_page=${size}${filter}`
     )
   ).json();
   todos = response.data;
 } catch (error) {
   console.log(error);
 }
-
+currentPage = currentPage > response.pages ? response.pages : currentPage;
 const pageGroup = (Math.ceil(currentPage / 10)-1)*10+1;
 let prev = {
   status: false,
@@ -68,9 +73,12 @@ let pageButtons = Array(10)
 
 
 ---
-
-<Layout>
-  <div class="flex items-center justify-between mb-4">
+<Partial>
+<div id="list-container" class="w-full mx-auto border rounded-lg"
+     hx-get={`./list?page=${currentPage}`}
+     hx-trigger="list-contaienr-refresh"
+     hx-push-url={`?page=${currentPage}`}>
+  <div class="flex items-center justify-between h-12 mx-8">
     <div>
       <span class="text-sm font-medium text-gray-700">
         showing {currentPage} of {response.pages} pages({pageGroup})
@@ -79,11 +87,11 @@ let pageButtons = Array(10)
     <div class="inline-flex">
       {
         prev.status ? (
-          <a href={prev.href} class="hover:bg-gray-300 px-3 py-1 text-gray-800 bg-gray-200 border border-r-0 rounded-l">
+          <a hx-get={prev.href} class="hover:bg-gray-300 w-16 px-3 py-1 text-right text-gray-800 bg-gray-200 rounded-l">
             Prev
           </a>
         ) : (
-          <div class=" px-3 py-1 text-gray-400 bg-gray-200 border border-r-0 rounded-l">
+          <div class=" w-16 px-3 py-1 text-gray-400 bg-gray-200 border border-r-0 rounded-l">
             Prev
           </div>
         )
@@ -91,15 +99,19 @@ let pageButtons = Array(10)
       {
         pageButtons.map((item) =>
           item.type === 'btn' ? (
-            <button class="hover:bg-blue-300 px-3 py-1 text-gray-800 bg-blue-200 border">
+            <a hx-get={`./list?page=${item.num}${filter}`}
+               hx-target="#list-container" 
+               hx-swap="outerHTML"
+               hx-push-url={`?page=${item.num}${filter}`}
+               class="hover:bg-blue-300 w-12 px-3 py-1 text-center text-gray-800 bg-blue-200 border">
               {item.num}
-            </button>
+            </a>
           ) : item.type === 'self' ? (
-            <div class="hover:bg-blue-300 px-3 py-1 font-bold text-gray-800 bg-blue-200 border">
+            <div class=" w-12 px-3 py-1 font-bold text-center text-gray-800 bg-blue-200 border">
               {item.num}
             </div>
           ) : (
-            <div class="hover:bg-gray-300 px-3 py-1 text-gray-800 bg-gray-200 border">
+            <div class=" w-12 px-3 py-1 text-center text-gray-800 bg-gray-200 border">
               {item.num}
             </div>
           )
@@ -107,18 +119,18 @@ let pageButtons = Array(10)
       }
       {
         next.status ? (
-          <a href={next.href} class="hover:bg-gray-300 px-3 py-1 text-gray-800 bg-gray-200 border">
+          <a href={next.href} class="hover:bg-gray-300 w-16 px-3 py-1 text-left text-gray-800 bg-gray-200 rounded-r">
             Next
           </a>
         ) : (
-          <div class=" px-3 py-1 text-gray-400 bg-gray-200 border">Next</div>
+          <div class=" text-gray-400w-16 px-3 py-1 text-left bg-gray-200 rounded-r">Next</div>
         )
       }
     </div>
   </div>
 
-  <table class="w-full">
-    <thead class="bg-primary border-t">
+  <table id="ddd" class="w-full">
+    <thead class="bg-primary h-12 border-t">
       <tr>
         <th class="text-centerp-2 w-12">Id</th>
         <!-- 3rem width -->
@@ -130,17 +142,25 @@ let pageButtons = Array(10)
     <tbody>
       {
         todos.map((todo) => (
-          <tr class="last:border-b border-t border-gray-300">
+          <tr class="last:border-b h-12 border-t border-gray-300">
             <td class="p-2 text-center">{todo.id}</td>
             <td class="p-2 break-words">{todo.todo}</td>
             <td class="flex justify-center p-2 text-center">
-              <button class="hover:bg-red-900/50 focus:outline-none focus:shadow-outline px-2 py-1 font-bold text-white bg-red-900 rounded">
-                Update
+              {todo.completed ?(
+                <button class="hover:bg-neutral-900/50 focus:outline-none focus:shadow-outline bg-neutral-700 w-20 px-2 py-1 text-white rounded">
+                Undone
               </button>
+              ):(
+              <button class="hover:bg-blue-900/50 focus:outline-none focus:shadow-outline marker:px-2 w-20 py-1 text-white bg-blue-900 rounded">
+                Done
+              </button>
+              )}
+              
             </td>
           </tr>
         ))
       }
     </tbody>
   </table>
-</Layout>
+</div>
+</Partial>

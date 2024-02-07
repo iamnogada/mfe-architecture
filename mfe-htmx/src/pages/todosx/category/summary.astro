@@ -1,6 +1,6 @@
 ---
 export const partial = true;
-
+import Partial from '@layouts/Partial.astro';
 let completedCount = 0;
 let total = 0;
 let categoriesCount = [];
@@ -27,27 +27,41 @@ try {
 } catch (error) {
   console.error(error);
 }
----
 
+
+---
+<>
 <section>
   <div class="max-w-lg mx-auto border rounded-lg">
-    <div class="flex justify-between items-center h-16 bg-info text-lg font-bold px-4 rounded-t-lg">
-      <p>List Header</p>
-      <span class="bg-slate-200 text-neutral py-1 px-3 w-12 text-center rounded-full text-sm">
-        {completedCount}/{total}
-      </span>
+    <div class="bg-info flex items-center justify-between h-16 px-4 text-lg font-bold">
+      <p>Category Summary</p>
+      <a href="#"
+      onclick="htmx.trigger('#list-container', 'list-contaienr-refresh')"
+      >
+
+        <span class="bg-slate-200 text-neutral w-18 px-3 py-1 text-sm text-center rounded-full">
+          {completedCount}/{total}
+        </span>
+      </a>
     </div>
-    <ul class="list-none p-0 m-0">
+    <ul class="p-0 m-0 list-none">
       {
         categories.map((category) => (
-          <li class="flex justify-between items-center bg-white px-4 py-2 border-t mb-0 last:rounded-b-lg">
+          <li class="last:rounded-b-lg flex items-center justify-between h-12 px-4 py-2 mb-0 bg-white border-t">
             <span>{category.name}</span>
-            <span class="bg-blue-500 text-white py-1 px-3 rounded-full text-sm">
+            <a href="#" class="inline-block w-10 text-center"
+            hx-get={`./list?categoryId=${category.id}`}
+            hx-target="#list-container"
+            hx-swap="outerHTML"
+            hx-push-url={`?categoryId=${category.id}`}
+            >
+            <span class="inline-block w-full px-3 py-1 text-sm text-white bg-blue-500 rounded-full">
               {categoriesCount[category.id]}
-            </span>
+            </span></a>
           </li>
         ))
       }
     </ul>
   </div>
 </section>
+</>
