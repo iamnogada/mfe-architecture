@@ -18,12 +18,12 @@
     "@sentry/astro": "^7.99.0",
     "@spotlightjs/astro": "^1.0.13",
     "alpinejs": "^3.13.5",
-    "astro": "^4.3.2",
+    "astro": "^4.3.5",
     "astro-htmx": "^1.0.5",
     "htmx.org": "^1.9.10"
   },
   "devDependencies": {
-    "@astrojs/ts-plugin": "^1.4.0",
+    "@astrojs/ts-plugin": "^1.5.0",
     "@types/alpinejs": "^3.13.6",
     "@types/node": "^20.11.13",
     "autoprefixer": "^10.4.17",

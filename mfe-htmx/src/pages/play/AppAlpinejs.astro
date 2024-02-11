@@ -1,0 +1,33 @@
+---
+
+
+// export const partial = true;
+
+const { eventName = 'update' } = Astro.props;
+
+const now = new Date(Date.now());
+
+// 날짜 포맷팅
+const year = now.getFullYear();
+const month = String(now.getMonth() + 1).padStart(2, '0'); // getMonth()는 0부터 시작하므로 1을 더해줌
+const date = String(now.getDate()).padStart(2, '0');
+const hours = String(now.getHours()).padStart(2, '0');
+const minutes = String(now.getMinutes()).padStart(2, '0');
+const seconds = String(now.getSeconds()).padStart(2, '0');
+
+// 포맷팅된 문자열 결합
+const formattedDate = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
+
+---
+<div x-init="console.log('init')"></div>
+<div x-data="{message:'hallo',id:'12'}" id="appalpine" x-on:card2.window="message=$event.detail.message;id=$event.detail.id"
+    
+class="max-w-sm p-5 mx-auto rounded-lg shadow-md">
+  <h2 class="mb-2 text-2xl text-gray-800">Alpine</h2>
+  <p class="mb-5 text-gray-600" x-text="message"></p>
+  <p class="mb-5 text-gray-600" x-text="id"></p>
+  <button @click="$dispatch('card-update',{ message: 'Hello World!' })"
+  class="focus:outline-none w-full py-2 text-white bg-blue-500 rounded cursor-pointer">
+    Click Me
+  </button>
+</div>

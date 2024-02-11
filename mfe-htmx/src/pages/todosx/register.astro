@@ -2,11 +2,24 @@
 export const partial = true;
 import Partial from '@layouts/Partial.astro';
 
+let categories=[];
+
+try {
+  const response = await fetch('http://localhost:3000/categories');
+  categories = await response.json();
+  categories.unshift({ id: -1, name: '<Select>' });
+} catch (error) {
+  
+}
 ---
 <Partial>
 
-<form action="" class="flex flex-row gap-4 p-4 bg-white rounded shadow-md">
+<form hx-post="apiRegister"
+      hx-ext="json-enc"
+      hx-swap="outerHTML"
+      class="flex flex-row gap-4 p-4 bg-white rounded shadow-md">
   <div class="flex flex-col flex-grow gap-4">
+    <input type="hidden" name="current-query" value="haha">
     <div class="flex items-center">
       <label for="todo" class="w-1/4">Todo</label>
       <textarea
@@ -19,13 +32,13 @@ import Partial from '@layouts/Partial.astro';
     <div class="flex items-center">
       <label for="category" class="w-1/4">Category</label>
       <select
-        name="category"
-        id="category"
+        name="categoryId"
+        id="categoryId"
         class="focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2 border border-gray-300 rounded"
       >
-        <option value="House">House</option>
-        <option value="Work">Work</option>
-        <option value="ETC">ETC</option>
+      { categories.map((category) => (
+        <option value={category.id}>{category.name}</option>
+      ))}
       </select>
     </div>
   </div>

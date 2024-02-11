@@ -5,6 +5,12 @@
 
 ## Document
 
+### Mocup database
+- json-server
+- [pocketbase](https://pocketbase.io/): admin@kubepia.net/admin123456
+  . db path : ../mfe-api-mockup/pbdb/
+  . $pocketbase serve --http 127.0.0.1:3000 --dir $(pwd)/../mfe-api-mockup/pbdb
+
 ### Astro
 - ENV Define
   - import.meta.env.MODE development for astro dev

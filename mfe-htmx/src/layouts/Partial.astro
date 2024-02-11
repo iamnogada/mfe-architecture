@@ -1,39 +1,39 @@
 ---
 import '../styles/base.css';
 
-const { title = 'ZMP' ,mode=''} = Astro.props;
-const isDev = import.meta.env.MODE === 'development' ? true : false;
-
+const { title = 'ZMP', mode = '' } = Astro.props;
+const isHTMX = Astro.request.headers.get('HX-Request') ? false : true;
 ---
-{isDev ? (
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="stylesheet" href="/assets/css/fontawesome.all.css" />
-    <link rel="stylesheet" href="/css/base.css" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-    <script src="/js/htmx.min.js" is:inline></script>
-    <script src="/js/handlebars.js" is:inline></script>
-    <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
-    <script defer src="/js/alpinejs.3.x.min.js" is:inline></script>
-  </head>
 
-  <body >
-    <div class="">
-      <slot />
-    </div>
-    <script is:inline>
-      htmx.logAll()
-    </script>
-    <script src="/js/client-side-templates.js" is:inline
-    ></script>
-  </body>
-</html>
-):(<slot />)}
+{
+  isHTMX ? (
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content="Astro description" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="stylesheet" href="/assets/css/fontawesome.all.css" />
+        <link rel="stylesheet" href="/css/base.css" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title}</title>
+        <script src="/js/htmx.min.js" is:inline />
+        <script src="/js/handlebars.js" is:inline />
+        <script src="/js/json-enc.js" />
+        <script defer src="/js/alpinejs.3.x.min.js" is:inline />
+      </head>
 
-
-
+      <body>
+        <div class="">
+          <slot />
+        </div>
+        <script is:inline>htmx.logAll()</script>
+        <script src="/js/client-side-templates.js" is:inline />
+        <script src="/js/htmx-chain-event.js" is:inline />
+        
+      </body>
+    </html>
+  ) : (
+    <slot />
+  )
+}
