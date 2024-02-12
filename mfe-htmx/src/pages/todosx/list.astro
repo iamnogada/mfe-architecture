@@ -12,6 +12,7 @@ interface IReponseData {
 export const partial = true;
 
 import Partial from '@layouts/Partial.astro';
+import Todo from '@pages/todosx/todo.astro';
 
 const size = 10;
 const url = new URL(Astro.request.url);
@@ -28,7 +29,7 @@ let response: IReponseData = {};
 try {
   response = await (
     await fetch(
-      `http://localhost:3000/todos?_page=${currentPage}&_per_page=${size}${filter}`
+      `http://localhost:3000/todos?_page=${currentPage}&_sort=-id&_per_page=${size}${filter}`
     )
   ).json();
   todos = response.data;
@@ -78,7 +79,7 @@ let pageButtons = Array(10)
     id="list-container"
     class="w-full mx-auto border rounded-lg"
     hx-get={`./list?page=${currentPage}`}
-    hx-trigger="list-contaienr-refresh,todo-added"
+    hx-trigger="list-contaienr-refresh,todo-added from:window"
     hx-push-url={`?page=${currentPage}`}
   >
     <div class="flex items-center justify-between h-12 mx-8">
@@ -155,21 +156,7 @@ let pageButtons = Array(10)
       <tbody>
         {
           todos.map((todo) => (
-            <tr class="last:border-b h-12 border-t border-gray-300">
-              <td class="p-2 text-center">{todo.id}</td>
-              <td class="p-2 break-words">{todo.todo}</td>
-              <td class="flex justify-center p-2 text-center">
-                {todo.completed ? (
-                  <button class="hover:bg-neutral-900/50 focus:outline-none focus:shadow-outline bg-neutral-700 w-20 px-2 py-1 text-white rounded">
-                    Undone
-                  </button>
-                ) : (
-                  <button class="hover:bg-blue-900/50 focus:outline-none focus:shadow-outline marker:px-2 w-20 py-1 text-white bg-blue-900 rounded">
-                    Done
-                  </button>
-                )}
-              </td>
-            </tr>
+            <Todo todo={todo} />
           ))
         }
       </tbody>

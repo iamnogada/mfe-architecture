@@ -1,15 +1,11 @@
 import { APIRoute } from 'astro';
 
-export const POST = async ({ params, request, redirect }) => {
+export const POST = async ({ request, redirect }) => {
   const body = await request.json();
-  console.log('Body:' + JSON.stringify(body));
-  console.log('URL:' + request.url);
-  console.log(`referrer:${request.refferer}`);
-  console.log(`referrer:${request.headers.get('referer')}`);
-  if (!body.todo || body.categoryId === -1) {
-    const error = { error: 'Todo or Category is missing' };
+
+  if (!body.todo || body.categoryId === "-1") {
     return new Response(
-      JSON.stringify(error),
+      JSON.stringify({ error: 'Todo or Category is missing' }),
       {
         status: 400,
         headers: {
@@ -18,5 +14,34 @@ export const POST = async ({ params, request, redirect }) => {
       }
     );
   }
-  return redirect('./register');
+  try {
+    let reponse = await fetch(`http://localhost:3000/todos?_page=1&_per_page=1`);
+    let data = await reponse.json();
+    console.log(`data: ${JSON.stringify(data)}`);
+    let id = data.items + 1;
+    let todo = { id, ...body, completed: false };
+    const raw = JSON.stringify(todo);
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    reponse = await fetch(`http://localhost:3000/todos`, requestOptions);
+    return redirect('./register');
+  }catch (error) {
+    console.log(JSON.stringify(error.message));
+    return new Response(
+      JSON.stringify(error.message),
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+  }
+  
 };

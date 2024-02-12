@@ -2,18 +2,21 @@
 import '../styles/base.css';
 
 const { title = 'ZMP', mode = '' } = Astro.props;
-let isHTMX = Astro.request.headers.get('HX-Request') ? false : true;
-console.log(`partial layout mode: ${mode} isHTMX: ${isHTMX}`);
-if (!Astro.locals['loaded']) {
-  Astro.locals['loaded'] = true;
-  isHTMX = true;
-} else {
-  isHTMX = false;
+let isRequired = Astro.request.headers.get('HX-Request') ? false : true;
+
+// console.log(`mode: ${mode}, isRequired: ${isRequired} Astro.locals['loaded']: ${Astro.locals['loaded']} Astro.request.headers.get('HX-Request'): ${Astro.request.headers.get('HX-Request')}`);
+
+if(Astro.locals['loaded'] && isRequired) {
+    isRequired=false;
 }
+
+Astro.locals['loaded'] = true;
+// console.log(`final:${isRequired}`);
+
 ---
 
 {
-  isHTMX ? (
+  isRequired ? (
     <html lang="en">
       <head>
         <meta charset="UTF-8" />
@@ -26,7 +29,7 @@ if (!Astro.locals['loaded']) {
         <title>{title}</title>
         <script src="/js/htmx.min.js" is:inline />
         <script src="/js/handlebars.js" is:inline />
-        <script src="/js/json-enc.js" />
+        <script src="/js/json-enc.js" is:inline/>
       </head>
 
       <body>
