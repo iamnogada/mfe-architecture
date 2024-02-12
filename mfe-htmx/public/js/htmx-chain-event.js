@@ -37,14 +37,14 @@
     onEvent: function (name, evt) {
       if (name === 'htmx:afterSettle' && evt.detail.xhr && evt.detail.xhr.status >= 200) {
         // handleNextEvent(evt);
-        var value = evt.detail.elt.getAttribute('hx-publish') ?? "";
+        var value = evt.detail.elt.getAttribute('hx-publish') || "";
         var list = value.split(/[\s,]/);
         list.forEach((eventName)=>{
           handleNextEvent(eventName);
         });
         return true;
       }else if(name === 'htmx:responseError'){
-        var value = evt.detail.elt.getAttribute('hx-publish-error') ?? "";
+        var value = evt.detail.elt.getAttribute('hx-publish-error') || "";
         var list = value.split(/[\s,]/);
         list.forEach((eventName)=>{
           handleErrorEvent(eventName,evt.detail.error);
