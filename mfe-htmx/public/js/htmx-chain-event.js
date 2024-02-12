@@ -2,20 +2,14 @@
   var htmxApi;//HtmxInternalApi
 
   function handleErrorEvent (eventName,error){
-    var nextEvent = new CustomEvent(eventName, {
-      detail: { message: error },
-      bubbles: true, // allows the event to bubble up through the DOM
-      cancelable: true // allows the event to be cancellable
-    });
+    var nextEvent = document.createEvent('CustomEvent');
+    nextEvent.initCustomEvent(eventName, true, true, { message: error });
     window.dispatchEvent(nextEvent);
   };
   
   function handleNextEvent (eventName){
-    const nextEvent = new CustomEvent(eventName, {
-      detail: { message: `Publish ${eventName}` },
-      bubbles: true, // allows the event to bubble up through the DOM
-      cancelable: true // allows the event to be cancellable
-    });
+    var nextEvent = document.createEvent('CustomEvent');
+    nextEvent.initCustomEvent(eventName, true, true, { message: "Publish " + eventName });
     window.dispatchEvent(nextEvent);
   }
   htmx.defineExtension('chain-event', {
