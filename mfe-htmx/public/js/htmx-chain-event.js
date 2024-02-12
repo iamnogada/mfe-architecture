@@ -1,8 +1,8 @@
 (function () {
   var htmxApi;//HtmxInternalApi
 
-  const handleErrorEvent = (eventName,error) => {
-    const nextEvent = new CustomEvent(eventName, {
+  function handleErrorEvent (eventName,error){
+    var nextEvent = new CustomEvent(eventName, {
       detail: { message: error },
       bubbles: true, // allows the event to bubble up through the DOM
       cancelable: true // allows the event to be cancellable
@@ -10,7 +10,7 @@
     window.dispatchEvent(nextEvent);
   };
   
-  const handleNextEvent = (eventName)=>{
+  function handleNextEvent (eventName){
     const nextEvent = new CustomEvent(eventName, {
       detail: { message: `Publish ${eventName}` },
       bubbles: true, // allows the event to bubble up through the DOM
@@ -37,15 +37,15 @@
     onEvent: function (name, evt) {
       if (name === 'htmx:afterSettle' && evt.detail.xhr && evt.detail.xhr.status >= 200) {
         // handleNextEvent(evt);
-        const value = evt.detail.elt.getAttribute('hx-publish') ?? "";
-        const list = value.split(/[\s,]/);
+        var value = evt.detail.elt.getAttribute('hx-publish') ?? "";
+        var list = value.split(/[\s,]/);
         list.forEach((eventName)=>{
           handleNextEvent(eventName);
         });
         return true;
       }else if(name === 'htmx:responseError'){
-        const value = evt.detail.elt.getAttribute('hx-publish-error') ?? "";
-        const list = value.split(/[\s,]/);
+        var value = evt.detail.elt.getAttribute('hx-publish-error') ?? "";
+        var list = value.split(/[\s,]/);
         list.forEach((eventName)=>{
           handleErrorEvent(eventName,evt.detail.error);
         });
