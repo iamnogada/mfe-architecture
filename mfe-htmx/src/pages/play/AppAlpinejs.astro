@@ -20,10 +20,10 @@ const formattedDate = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 
 ---
 <div x-init="console.log('init')"></div>
-<div x-data="{message:'hallo',id:'12'}" id="appalpine" x-on:card2.window="message=$event.detail.message;id=$event.detail.id"
+<div x-data="{message:'hallo',id:'12'}" id="appalpine" x-on:on-error.window="message=$event.detail.message;id=$event.detail.id"
     
 class="max-w-sm p-5 mx-auto rounded-lg shadow-md">
-  <h2 class="mb-2 text-2xl text-gray-800">Alpine</h2>
+  <h2 class="mb-2 text-2xl text-gray-800">Error Display</h2>
   <p class="mb-5 text-gray-600" x-text="message"></p>
   <p class="mb-5 text-gray-600" x-text="id"></p>
   <button @click="$dispatch('card-update',{ message: 'Hello World!' })"

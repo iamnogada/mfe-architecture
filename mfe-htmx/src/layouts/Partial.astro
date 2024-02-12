@@ -27,9 +27,10 @@ const isHTMX = Astro.request.headers.get('HX-Request') ? false : true;
         <div class="">
           <slot />
         </div>
-        <script is:inline>htmx.logAll()</script>
+
         <script src="/js/client-side-templates.js" is:inline />
         <script src="/js/htmx-chain-event.js" is:inline />
+        <script src="https://unpkg.com/htmx.org/dist/ext/debug.js" is:inline></script>
         
       </body>
     </html>

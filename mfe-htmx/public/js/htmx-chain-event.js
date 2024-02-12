@@ -35,17 +35,16 @@
       }
     },
     onEvent: function (name, evt) {
-      if (name === 'htmx:afterSettle' && evt.detail.xhr) {
+      if (name === 'htmx:afterSettle' && evt.detail.xhr && evt.detail.xhr.status >= 200) {
         // handleNextEvent(evt);
-        const value = evt.detail.elt.getAttribute('hx-publish');
+        const value = evt.detail.elt.getAttribute('hx-publish') ?? "";
         const list = value.split(/[\s,]/);
-        console.log(`hx-publish:${JSON.stringify(list)}`);
         list.forEach((eventName)=>{
           handleNextEvent(eventName);
         });
         return true;
       }else if(name === 'htmx:responseError'){
-        const value = evt.detail.elt.getAttribute('hx-publish-error');
+        const value = evt.detail.elt.getAttribute('hx-publish-error') ?? "";
         const list = value.split(/[\s,]/);
         list.forEach((eventName)=>{
           handleErrorEvent(eventName,evt.detail.error);
