@@ -2,7 +2,14 @@
 import '../styles/base.css';
 
 const { title = 'ZMP', mode = '' } = Astro.props;
-const isHTMX = Astro.request.headers.get('HX-Request') ? false : true;
+let isHTMX = Astro.request.headers.get('HX-Request') ? false : true;
+console.log(`partial layout mode: ${mode} isHTMX: ${isHTMX}`);
+if (!Astro.locals['loaded']) {
+  Astro.locals['loaded'] = true;
+  isHTMX = true;
+} else {
+  isHTMX = false;
+}
 ---
 
 {
@@ -20,18 +27,37 @@ const isHTMX = Astro.request.headers.get('HX-Request') ? false : true;
         <script src="/js/htmx.min.js" is:inline />
         <script src="/js/handlebars.js" is:inline />
         <script src="/js/json-enc.js" />
-        <script defer src="/js/alpinejs.3.x.min.js" is:inline />
       </head>
 
       <body>
         <div class="">
           <slot />
         </div>
-
+        <div
+          x-init="console.log('layout init')"
+          x-data="{
+            message:'default message',
+            open:false,
+            showError(evt){
+              console.log(JSON.stringify(evt.detail));
+              this.message = evt.detail.message;
+              this.open=true;
+            }
+          }" @onerror.window="showError($event)"
+          :class="{'animate-slideUp':!open}"
+        >
+          <div
+            class=" absolute top-0 items-center justify-between hidden w-full px-4 py-2 text-white bg-red-500 rounded-md"
+            :class="{'hidden':!open,'flex':open}"
+          ><span x-text="message"></span>
+          <a href="#" x-on:click="open = ! open"><i class="fa-solid fa-square-xmark"></i></a>
+          </div>
+        </div>
+        <script is:inline>htmx.logAll()</script>
         <script src="/js/client-side-templates.js" is:inline />
         <script src="/js/htmx-chain-event.js" is:inline />
-        <script src="https://unpkg.com/htmx.org/dist/ext/debug.js" is:inline></script>
-        
+        <script src="https://unpkg.com/htmx.org/dist/ext/debug.js" is:inline />
+        <script src="/js/alpinejs.3.x.min.js" is:inline />
       </body>
     </html>
   ) : (

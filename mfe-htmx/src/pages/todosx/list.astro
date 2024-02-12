@@ -73,12 +73,12 @@ let pageButtons = Array(10)
   }));
 ---
 
-<Partial>
+<Partial mode="list">
   <div
     id="list-container"
     class="w-full mx-auto border rounded-lg"
     hx-get={`./list?page=${currentPage}`}
-    hx-trigger="list-contaienr-refresh"
+    hx-trigger="list-contaienr-refresh,todo-added"
     hx-push-url={`?page=${currentPage}`}
   >
     <div class="flex items-center justify-between h-12 mx-8">

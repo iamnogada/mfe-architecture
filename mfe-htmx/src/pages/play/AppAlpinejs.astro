@@ -1,7 +1,5 @@
 ---
-
-
-// export const partial = true;
+export const partial = true;
 
 const { eventName = 'update' } = Astro.props;
 
@@ -17,17 +15,30 @@ const seconds = String(now.getSeconds()).padStart(2, '0');
 
 // 포맷팅된 문자열 결합
 const formattedDate = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
-
+// <!-- $event.detail.message;id=$event.detail.id; -->
 ---
+
 <div x-init="console.log('init')"></div>
-<div x-data="{message:'hallo',id:'12'}" id="appalpine" x-on:on-error.window="message=$event.detail.message;id=$event.detail.id"
-    
-class="max-w-sm p-5 mx-auto rounded-lg shadow-md">
+<div
+  x-data="{
+  message:'hallo1',
+  id:'12',
+  show(evt){
+    console.log(evt.detail.message);
+    this.message = evt.detail.message;
+  }
+}"
+  id="appalpine"
+  x-on:on-error.window="show($event)"
+  class="max-w-sm p-5 mx-auto rounded-lg shadow-md"
+>
   <h2 class="mb-2 text-2xl text-gray-800">Error Display</h2>
   <p class="mb-5 text-gray-600" x-text="message"></p>
   <p class="mb-5 text-gray-600" x-text="id"></p>
-  <button @click="$dispatch('card-update',{ message: 'Hello World!' })"
-  class="focus:outline-none w-full py-2 text-white bg-blue-500 rounded cursor-pointer">
+  <button
+    @click="$dispatch('card-update',{ message: 'Hello World!' })"
+    class="focus:outline-none w-full py-2 text-white bg-blue-500 rounded cursor-pointer"
+  >
     Click Me
   </button>
 </div>

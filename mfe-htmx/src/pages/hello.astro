@@ -1,9 +1,0 @@
----
-console.log('hello in server');
-export const partial = true;
-const category = await (await fetch("http://localhost:3000/categories")).json();    
----
-hello
-{ category.map(item=>(
-    <div>{item.name}</div>
-))}

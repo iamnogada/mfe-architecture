@@ -2,6 +2,7 @@
   var htmxApi;//HtmxInternalApi
 
   function handleErrorEvent (eventName,error){
+    console.log('Error Event:' + eventName + ' Error:' + error);
     var nextEvent = document.createEvent('CustomEvent');
     nextEvent.initCustomEvent(eventName, true, true, { message: error });
     window.dispatchEvent(nextEvent);

@@ -4,11 +4,12 @@ import TodoCategorySummary from '@pages/todosx/category/summary.astro';
 import TodoList from "@pages/todosx/list.astro";
 import TodoRegister from "@pages/todosx/register.astro";
 
-// export const partial = true;
+export const partial = true;
 
 ---
 
-<Partial>
+<Partial mode="main">
+  
   <main class="flex-rows justify-stretch flex gap-3">
     <div class="w-1/4">
       <TodoCategorySummary />

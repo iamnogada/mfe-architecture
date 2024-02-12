@@ -2,48 +2,55 @@
 export const partial = true;
 import Partial from '@layouts/Partial.astro';
 
-let categories=[];
+let categories = [];
 
 try {
   const response = await fetch('http://localhost:3000/categories');
   categories = await response.json();
   categories.unshift({ id: -1, name: '<Select>' });
-} catch (error) {
-  
-}
----
-<Partial>
+} catch (error) {}
 
-<form hx-post="apiRegister"
-      hx-ext="json-enc"
-      hx-swap="outerHTML"
-      class="flex flex-row gap-4 p-4 bg-white rounded shadow-md">
-  <div class="flex flex-col flex-grow gap-4">
-    <input type="hidden" name="current-query" value="haha">
-    <div class="flex items-center">
-      <label for="todo" class="w-1/4">Todo</label>
-      <textarea
-        name="todo"
-        id="todo"
-        placeholder="Enter your todo"
-        class="focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2 border border-gray-300 rounded"
-      ></textarea>
-    </div>
-    <div class="flex items-center">
-      <label for="category" class="w-1/4">Category</label>
-      <select
-        name="categoryId"
-        id="categoryId"
-        class="focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2 border border-gray-300 rounded"
-      >
-      { categories.map((category) => (
-        <option value={category.id}>{category.name}</option>
-      ))}
-      </select>
-    </div>
-  </div>
-  <button class="hover:bg-blue-600 w-20 py-2 text-white bg-blue-500 rounded"
-    >등록</button
+---
+
+<Partial mode="register">
+  
+  <form
+    id="todoform"
+    hx-post="apiRegister"
+    hx-ext="json-enc,chain-event"
+    hx-swap="outerHTML"
+    hx-publish="todo-added"
+    hx-publish-error="onerror"
+    class="flex flex-row gap-4 p-4 bg-white rounded shadow-md"
   >
-</form>
+    <div class="flex flex-col flex-grow gap-4">
+      <input type="hidden" name="current-query" value="haha" />
+      <div class="flex items-center">
+        <label for="todo" class="w-1/4">Todo</label>
+        <textarea
+          name="todo"
+          id="todo"
+          placeholder="Enter your todo"
+          class="focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2 border border-gray-300 rounded"
+        ></textarea>
+      </div>
+      <div class="flex items-center">
+        <label for="category" class="w-1/4">Category</label>
+        <select
+          name="categoryId"
+          id="categoryId"
+          class="focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2 border border-gray-300 rounded"
+        >
+          {
+            categories.map((category) => (
+              <option value={category.id}>{category.name}</option>
+            ))
+          }
+        </select>
+      </div>
+    </div>
+    <button class="hover:bg-blue-600 w-20 py-2 text-white bg-blue-500 rounded"
+      >등록</button
+    >
+  </form>
 </Partial>

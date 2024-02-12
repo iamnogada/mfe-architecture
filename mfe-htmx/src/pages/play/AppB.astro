@@ -1,7 +1,7 @@
 ---
 
 
-// export const partial = true;
+export const partial = true;
 const now = new Date(Date.now());
 
 // 날짜 포맷팅
@@ -19,7 +19,7 @@ const formattedDate = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
 
 <div id="appb"
     hx-ext="chain-event"
-    hx-get="/play/AppB"
+    hx-get="/play/AppK"
     hx-trigger="click"
     hx-swap="outerHTML",
     hx-publish="card-update"
