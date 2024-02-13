@@ -5,7 +5,7 @@ import Partial from '@layouts/Partial.astro';
 let categories = [];
 
 try {
-  const response = await fetch('http://localhost:3000/categories');
+  const response = await fetch('http://localhost:3000/categories?order=id.asc');
   categories = await response.json();
   categories.unshift({ id: -1, name: '<Select>' });
 } catch (error) {}
@@ -36,8 +36,8 @@ try {
       <div class="flex items-center">
         <label for="category" class="w-1/4">Category</label>
         <select
-          name="categoryId"
-          id="categoryId"
+          name="categoryid"
+          id="categoryid"
           class="focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2 border border-gray-300 rounded"
         >
           {

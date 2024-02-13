@@ -3,7 +3,7 @@ import { APIRoute } from 'astro';
 export const POST = async ({ request, redirect }) => {
   const body = await request.json();
 
-  if (!body.todo || body.categoryId === "-1") {
+  if (!body.todo || body.categoryid === "-1") {
     return new Response(
       JSON.stringify({ error: 'Todo or Category is missing' }),
       {
@@ -15,12 +15,7 @@ export const POST = async ({ request, redirect }) => {
     );
   }
   try {
-    let reponse = await fetch(`http://localhost:3000/todos?_page=1&_per_page=1`);
-    let data = await reponse.json();
-    console.log(`data: ${JSON.stringify(data)}`);
-    let id = data.items + 1;
-    let todo = { id, ...body, completed: false };
-    const raw = JSON.stringify(todo);
+    const raw = JSON.stringify(body);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     var requestOptions = {
@@ -29,7 +24,7 @@ export const POST = async ({ request, redirect }) => {
       body: raw,
       redirect: 'follow'
     };
-    reponse = await fetch(`http://localhost:3000/todos`, requestOptions);
+    await fetch(`http://localhost:3000/todos`, requestOptions);
     return redirect('./register');
   }catch (error) {
     console.log(JSON.stringify(error.message));

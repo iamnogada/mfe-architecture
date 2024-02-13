@@ -2,16 +2,19 @@
   var htmxApi;//HtmxInternalApi
 
   function handleErrorEvent (eventName,error){
-    console.log('Error Event:' + eventName + ' Error:' + error);
-    var nextEvent = document.createEvent('CustomEvent');
-    nextEvent.initCustomEvent(eventName, true, true, { message: error });
-    window.dispatchEvent(nextEvent);
+    console.log('==== Error Event:' + eventName + ' Error:' + error);
+    // var nextEvent = document.createEvent('CustomEvent');
+    // nextEvent.initCustomEvent(eventName, true, true, { message: error });
+    const evt = new CustomEvent(eventName, { detail: { message: error } });
+    window.dispatchEvent(evt);
   };
   
   function handleNextEvent (eventName){
-    var nextEvent = document.createEvent('CustomEvent');
-    nextEvent.initCustomEvent(eventName, true, true, { message: "Publish " + eventName });
-    window.dispatchEvent(nextEvent);
+    // var nextEvent = document.createEvent('CustomEvent');
+    // nextEvent.initCustomEvent(eventName, true, true, { message: "Publish " + eventName });
+    console.log('==== Next Event:' + eventName);
+    const evt = new CustomEvent(eventName, { detail: { message: "Publish " + eventName } });
+    window.dispatchEvent(evt);
   }
   htmx.defineExtension('chain-event', {
     init: function (apiRef) {
@@ -30,7 +33,7 @@
       }
     },
     onEvent: function (name, evt) {
-      if (name === 'htmx:afterSettle' && evt.detail.xhr && evt.detail.xhr.status >= 200) {
+      if (name === 'htmx:afterRequest' && evt.detail.xhr && evt.detail.xhr.status >= 200) {
         // handleNextEvent(evt);
         var value = evt.detail.elt.getAttribute('hx-publish') || "";
         var list = value.split(/[\s,]/);

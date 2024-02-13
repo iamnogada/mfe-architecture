@@ -14,85 +14,112 @@ export const partial = true;
 import Partial from '@layouts/Partial.astro';
 import Todo from '@pages/todosx/todo.astro';
 
+// Get todos data with pagination like offset and limit and return total items
+const getTodos = async (paramSort, paramOffset, paramLimit, paramFilter) => {
+  const url = `http://localhost:3000/todos?${paramSort}&${paramOffset}&${paramLimit}&${paramFilter}`;
+  console.log(`url: ${url}`);
+
+  const response = await fetch(url, {
+    headers: { Prefer: 'count=exact' }
+  });
+  const data = await response.json();
+  const range = response.headers.get('Content-Range');
+  console.log(`range: ${range}`);
+
+  const total = parseInt(range.split('/').pop());
+  return { todos: data, total: total };
+};
+
+// initial variables
 const size = 10;
 const url = new URL(Astro.request.url);
 const params = new URLSearchParams(url.search);
-let currentPage = parseInt(params.get('page'), 10) || 1;
-let categoryId = params.get('categoryId') || '';
-const filter = !!categoryId ? `&categoryId=${categoryId}` : '';
-currentPage = Math.max(1, currentPage);
+let page = parseInt(params.get('page'), 10) || 1;
+page = Math.max(1, page);
+let categoryid = params.get('categoryid') || '';
+const filter = !!categoryid ? `&categoryid=${categoryid}` : '';
+const paramFilter = !!categoryid ? `categoryid=eq.${categoryid}` : '';
+const paramSort = 'order=id.desc';
 
-// console.log(`cat: ${categoryId}, filter: ${filter}`);
+// get offset and limit by page number
+const paramOffset = `offset=${(page - 1) * size}`;
+const paramLimit = `limit=${size}`;
+const { todos, total } = await getTodos(
+  paramSort,
+  paramOffset,
+  paramLimit,
+  paramFilter
+);
+const totalPage = Math.ceil(total / size);
 
-let todos = [];
-let response: IReponseData = {};
-try {
-  response = await (
-    await fetch(
-      `http://localhost:3000/todos?_page=${currentPage}&_sort=-id&_per_page=${size}${filter}`
-    )
-  ).json();
-  todos = response.data;
-} catch (error) {
-  console.log(error);
-}
-currentPage = currentPage > response.pages ? response.pages : currentPage;
-const pageGroup = (Math.ceil(currentPage / 10) - 1) * 10 + 1;
-let prev = {
-  status: false,
-  href: '#'
-};
-let next = {
-  status: false,
-  href: '#'
-};
-if (pageGroup < 11) {
-  prev.status = false;
-  prev.href = `#`;
-} else {
-  prev.status = true;
-  prev.href = `./list?page=${pageGroup - 1}`;
-}
-if (pageGroup + 9 >= response.pages) {
-  next.status = false;
-  next.href = `#`;
-} else {
-  next.status = true;
-  next.href = `./list?page=${pageGroup + 10}`;
-}
+// get pagination block
+page = page < 1 ? 1 : page;
+const startpage = Math.floor((page - 1) / 10) * 10 + 1;
+console.log(`startpage: ${startpage}`);
 
-let pageButtons = Array(10)
+const pageButtons = Array(10)
   .fill({})
   .map((_, i) => ({
-    num: i + pageGroup,
-    type:
-      i + pageGroup == currentPage
+    num: i + startpage,
+    status:
+      i + startpage == page
         ? 'self'
-        : i + pageGroup <= response.pages
-          ? 'btn'
-          : 'text'
+        : i + startpage <= totalPage
+          ? 'active'
+          : 'disable',
+    href:
+      i + startpage == page
+        ? '#'
+        : i + startpage <= totalPage
+          ? `?page=${i + startpage}${filter}`
+          : '#'
   }));
+const prevButton =
+  page > 10
+    ? {
+        status: true,
+        href: `?page=${startpage - 1}${filter}`
+      }
+    : {
+        status: false,
+        href: '#'
+      };
+const nextButton =
+  page < totalPage - 9
+    ? {
+        status: true,
+        href: `?page=${startpage + 10}${filter}`
+      }
+    : {
+        status: false,
+        href: '#'
+      };
 ---
 
-<Partial mode="list">
+<Partial>
   <div
     id="list-container"
     class="w-full mx-auto border rounded-lg"
-    hx-get={`./list?page=${currentPage}`}
-    hx-trigger="list-contaienr-refresh,todo-added from:window"
-    hx-push-url={`?page=${currentPage}`}
+    hx-get={`./list?page=${page}${filter}`}
+    hx-trigger="list-contaienr-refresh from:window, todo-added from:window"
+    hx-push-url={`./main?page=${page}${filter}`}
   >
-    <div class="flex items-center justify-between h-12 mx-8">
+    <div
+    
+     class="flex items-center justify-between h-12 mx-8">
       <div>
         <span class="text-sm font-medium text-gray-700">
-          Showing {currentPage} of {response.pages} pages({pageGroup})
+          Showing {page} of {totalPage} pages
         </span>
       </div>
       <div class="inline-flex">
         {
-          prev.status ? (
+          prevButton.status ? (
             <button
-              hx-get={prev.href}
+              hx-get={`./list${prevButton.href}`}
+              hx-target="#list-container"
+              hx-swap="outerHTML"
+              hx-push-url={`main?${prevButton.href}`}
               class="hover:bg-gray-300 w-16 px-3 py-1 text-right text-gray-800 bg-gray-200 rounded-l"
             >
               Prev
@@ -105,31 +132,34 @@ let pageButtons = Array(10)
         }
         {
           pageButtons.map((item) =>
-            item.type === 'btn' ? (
+            item.status === 'active' ? (
               <button
-                hx-get={`./list?page=${item.num}${filter}`}
+                hx-get={`./list${item.href}`}
                 hx-target="#list-container"
                 hx-swap="outerHTML"
-                hx-push-url={`?page=${item.num}${filter}`}
+                hx-push-url={`./main${item.href}`}
                 class="hover:bg-blue-300 w-12 px-3 py-1 text-center text-gray-800 bg-blue-200 border"
               >
                 {item.num}
               </button>
-            ) : item.type === 'self' ? (
-              <div class=" w-12 px-3 py-1 font-bold text-center text-gray-800 bg-blue-200 border">
+            ) : item.status === 'self' ? (
+              <button class=" w-12 px-3 py-1 font-bold text-center text-gray-800 bg-blue-200 border">
                 {item.num}
-              </div>
+              </button>
             ) : (
-              <div class=" w-12 px-3 py-1 text-center text-gray-800 bg-gray-200 border">
+              <button class=" w-12 px-3 py-1 text-center text-gray-800 bg-gray-200 border">
                 {item.num}
-              </div>
+              </button>
             )
           )
         }
         {
-          next.status ? (
+          nextButton.status ? (
             <button
-              hx-get={next.href}
+              hx-get={`./list${nextButton.href}`}
+              hx-target="#list-container"
+              hx-swap="outerHTML"
+              hx-push-url={`main${nextButton.href}`}
               class="hover:bg-gray-300 w-16 px-3 py-1 text-left text-gray-800 bg-gray-200 rounded-r"
             >
               Next
@@ -154,11 +184,7 @@ let pageButtons = Array(10)
         </tr>
       </thead>
       <tbody>
-        {
-          todos.map((todo) => (
-            <Todo todo={todo} />
-          ))
-        }
+        {todos.map((todo) => <Todo todo={todo} />)}
       </tbody>
     </table>
   </div>

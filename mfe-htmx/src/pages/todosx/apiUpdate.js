@@ -3,19 +3,18 @@
 export const PUT = async ({request,redirect}) => {
     const body = await request.json();
     try{
-      let response = await fetch(`http://localhost:3000/todos/${body.id}`);
-      let data = await response.json();
-      let todo = { ...data, ...body };
-      const raw = JSON.stringify(todo);
+
+      const raw = JSON.stringify(body);
+      console.log(`body: ${JSON.stringify(body)}`);
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
       var requestOptions = {
-        method: 'PUT',
+        method: 'PATCH',
         headers: myHeaders,
         body: raw,
         redirect: 'follow'
       };
-      response = await fetch(`http://localhost:3000/todos/${body.id}`, requestOptions);
+      const response = await fetch(`http://localhost:3000/todos?id=eq.${body.id}`, requestOptions);
     }catch(error){
     }
     
