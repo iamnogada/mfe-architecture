@@ -3,28 +3,31 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev --config astro.config.dev.mjs",
+    "dev": "concurrently \"npm run astro\" \"npm run css\"",
+    "astro": "astro dev --config astro.config.dev.mjs",
+    "css": "tailwindcss -i ./src/styles/base.css -o ./public/css/base.css --watch",
     "serve": "astro dev --config astro.config.prd.mjs",
     "start": "astro --config astro.config.dev.mjs",
     "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "preview": "astro preview"
   },
   "dependencies": {
     "@astrojs/alpinejs": "^0.4.0",
-    "@astrojs/node": "^8.1.0",
+    "@astrojs/node": "^8.2.0",
     "@astrojs/tailwind": "^5.1.0",
     "@sentry/astro": "^7.99.0",
     "@spotlightjs/astro": "^1.0.13",
     "alpinejs": "^3.13.5",
-    "astro": "^4.2.7",
+    "astro": "^4.3.5",
     "astro-htmx": "^1.0.5",
     "htmx.org": "^1.9.10"
   },
   "devDependencies": {
+    "@astrojs/ts-plugin": "^1.5.0",
     "@types/alpinejs": "^3.13.6",
     "@types/node": "^20.11.13",
     "autoprefixer": "^10.4.17",
+    "concurrently": "^8.2.2",
     "daisyui": "^4.6.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-astro": "^0.31.3",

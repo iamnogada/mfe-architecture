@@ -1,0 +1,19 @@
+---
+import Partial from '@layouts/Partial.astro';
+import TodoCategorySummary from '@pages/todosx/category/summary.astro';
+import TodoList from "@pages/todosx/list.astro";
+
+export const partial = true;
+
+---
+
+<Partial>
+  <main class="flex-rows justify-stretch flex gap-3">
+    <div class="w-1/4">
+      <TodoCategorySummary />
+    </div>
+    <div class=" flex-grow">
+      <TodoList />
+    </div>
+  </main>
+</Partial>

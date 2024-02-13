@@ -1,0 +1,191 @@
+---
+interface IReponseData {
+  first?: number;
+  prev?: number;
+  next?: number;
+  last?: number;
+  pages?: number;
+  items?: number;
+  data?: [];
+}
+
+export const partial = true;
+
+import Partial from '@layouts/Partial.astro';
+import Todo from '@pages/todosx/todo.astro';
+
+// Get todos data with pagination like offset and limit and return total items
+const getTodos = async (paramSort, paramOffset, paramLimit, paramFilter) => {
+  const url = `http://localhost:3000/todos?${paramSort}&${paramOffset}&${paramLimit}&${paramFilter}`;
+  console.log(`url: ${url}`);
+
+  const response = await fetch(url, {
+    headers: { Prefer: 'count=exact' }
+  });
+  const data = await response.json();
+  const range = response.headers.get('Content-Range');
+  console.log(`range: ${range}`);
+
+  const total = parseInt(range.split('/').pop());
+  return { todos: data, total: total };
+};
+
+// initial variables
+const size = 10;
+const url = new URL(Astro.request.url);
+const params = new URLSearchParams(url.search);
+let page = parseInt(params.get('page'), 10) || 1;
+page = Math.max(1, page);
+let categoryid = params.get('categoryid') || '';
+const filter = !!categoryid ? `&categoryid=${categoryid}` : '';
+const paramFilter = !!categoryid ? `categoryid=eq.${categoryid}` : '';
+const paramSort = 'order=id.desc';
+
+// get offset and limit by page number
+const paramOffset = `offset=${(page - 1) * size}`;
+const paramLimit = `limit=${size}`;
+const { todos, total } = await getTodos(
+  paramSort,
+  paramOffset,
+  paramLimit,
+  paramFilter
+);
+const totalPage = Math.ceil(total / size);
+
+// get pagination block
+page = page < 1 ? 1 : page;
+const startpage = Math.floor((page - 1) / 10) * 10 + 1;
+console.log(`startpage: ${startpage}`);
+
+const pageButtons = Array(10)
+  .fill({})
+  .map((_, i) => ({
+    num: i + startpage,
+    status:
+      i + startpage == page
+        ? 'self'
+        : i + startpage <= totalPage
+          ? 'active'
+          : 'disable',
+    href:
+      i + startpage == page
+        ? '#'
+        : i + startpage <= totalPage
+          ? `?page=${i + startpage}${filter}`
+          : '#'
+  }));
+const prevButton =
+  page > 10
+    ? {
+        status: true,
+        href: `?page=${startpage - 1}${filter}`
+      }
+    : {
+        status: false,
+        href: '#'
+      };
+const nextButton =
+  page < totalPage - 9
+    ? {
+        status: true,
+        href: `?page=${startpage + 10}${filter}`
+      }
+    : {
+        status: false,
+        href: '#'
+      };
+---
+
+<Partial>
+  <div
+    id="list-container"
+    class="w-full mx-auto border rounded-lg"
+    hx-get={`./list?page=${page}${filter}`}
+    hx-trigger="list-contaienr-refresh from:window, todo-added from:window"
+    hx-push-url={`./main?page=${page}${filter}`}
+  >
+    <div
+    
+     class="flex items-center justify-between h-12 mx-8">
+      <div>
+        <span class="text-sm font-medium text-gray-700">
+          Showing {page} of {totalPage} pages
+        </span>
+      </div>
+      <div class="inline-flex">
+        {
+          prevButton.status ? (
+            <button
+              hx-get={`./list${prevButton.href}`}
+              hx-target="#list-container"
+              hx-swap="outerHTML"
+              hx-push-url={`main?${prevButton.href}`}
+              class="hover:bg-gray-300 w-16 px-3 py-1 text-right text-gray-800 bg-gray-200 rounded-l"
+            >
+              Prev
+            </button>
+          ) : (
+            <div class=" w-16 px-3 py-1 text-gray-400 bg-gray-200 border border-r-0 rounded-l">
+              Prev
+            </div>
+          )
+        }
+        {
+          pageButtons.map((item) =>
+            item.status === 'active' ? (
+              <button
+                hx-get={`./list${item.href}`}
+                hx-target="#list-container"
+                hx-swap="outerHTML"
+                hx-push-url={`./main${item.href}`}
+                class="hover:bg-blue-300 w-12 px-3 py-1 text-center text-gray-800 bg-blue-200 border"
+              >
+                {item.num}
+              </button>
+            ) : item.status === 'self' ? (
+              <button class=" w-12 px-3 py-1 font-bold text-center text-gray-800 bg-blue-200 border">
+                {item.num}
+              </button>
+            ) : (
+              <button class=" w-12 px-3 py-1 text-center text-gray-800 bg-gray-200 border">
+                {item.num}
+              </button>
+            )
+          )
+        }
+        {
+          nextButton.status ? (
+            <button
+              hx-get={`./list${nextButton.href}`}
+              hx-target="#list-container"
+              hx-swap="outerHTML"
+              hx-push-url={`main${nextButton.href}`}
+              class="hover:bg-gray-300 w-16 px-3 py-1 text-left text-gray-800 bg-gray-200 rounded-r"
+            >
+              Next
+            </button>
+          ) : (
+            <div class=" w-16 px-3 py-1 text-gray-400 bg-gray-200 border border-r-0 rounded-l">
+              Next
+            </div>
+          )
+        }
+      </div>
+    </div>
+
+    <table id="ddd" class="w-full">
+      <thead class="bg-primary h-12 border-t">
+        <tr>
+          <th class="text-centerp-2 w-12">Id</th>
+          <!-- 3rem width -->
+          <th class="flex-grow p-2 text-left">Todo</th>
+          <th class="w-32 p-2 text-center">Action</th>
+          <!-- 5rem width -->
+        </tr>
+      </thead>
+      <tbody>
+        {todos.map((todo) => <Todo todo={todo} />)}
+      </tbody>
+    </table>
+  </div>
+</Partial>

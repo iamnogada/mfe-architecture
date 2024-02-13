@@ -89,3 +89,22 @@ All commands are run from the root of the project, from a terminal:
   ``` html
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   ```
+
+```jsx
+import React from "react";
+const componentURI = "http://localhost:3000/src/MicroFrontend.jsx";
+// import MicroFrontendA from "http://localhost:3000/src/MicroFrontend.jsx";
+// import MicroFrontendB from "http://localhost:7200/bundle.js";
+
+
+const module =await import(componentURI);
+// const MicroFrontendA = module.default;
+// const ReactComponent = () => (
+//   <>
+//     <MicroFrontendA />
+//     {/* <MicroFrontendB /> */}
+//   </>
+// );
+
+export default module.default;
+```

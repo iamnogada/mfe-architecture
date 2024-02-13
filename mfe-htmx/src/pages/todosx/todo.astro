@@ -1,0 +1,59 @@
+---
+
+export const partial = true;
+
+import Partial from '@layouts/Partial.astro';
+
+let { todo } = Astro.props;
+if(!todo){
+  todo = {
+    id: 0,
+    todo: 'No todos found',
+    completed: false,
+    categoryId:1
+  }
+}
+
+
+---
+<Partial>
+  <tr class="last:border-b h-12 border-t border-gray-300">
+    <td class="p-2 text-center">{todo.id}</td>
+    {
+      todo.completed ? (
+      <td class="p-2 line-through break-words">{todo.todo}</td>
+      ):(
+      <td class="p-2 break-words">{todo.todo}</td>
+      )
+    }
+    
+    <td class="flex justify-center p-2 text-center">
+      {todo.completed ? (
+        <button 
+        hx-put="apiUpdate"
+        hx-ext="json-enc,chain-event"
+        hx-vars={`id:${todo.id},todo:'${todo.todo}',completed:false`}
+        hx-target="#list-container"
+        hx-swap="outerHTML"
+        hx-publish="todo-updated"
+        hx-publish-error="onerror"
+        class="hover:bg-neutral-900/50 focus:outline-none focus:shadow-outline bg-neutral-700 w-20 px-2 py-1 text-white rounded">
+          Undone
+        </button>
+      ) : (
+        <button 
+        hx-put="apiUpdate"
+        hx-ext="json-enc,chain-event"
+        hx-vars={`id:${todo.id},todo:'${todo.todo}',completed:true`}
+        hx-target="#list-container"
+        hx-swap="outerHTML"
+        hx-publish="todo-updated"
+        hx-publish-error="onerror"
+        class="hover:bg-blue-900/50 focus:outline-none focus:shadow-outline marker:px-2 w-20 py-1 text-white bg-blue-900 rounded">
+          Done
+        </button>
+      )}
+    </td>
+  </tr>
+
+</Partial>

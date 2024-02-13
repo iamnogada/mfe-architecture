@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+div.nogada {
+    @apply bg-red-500;
+}
+div.iamnogada {
+    @apply bg-red-500;
+}

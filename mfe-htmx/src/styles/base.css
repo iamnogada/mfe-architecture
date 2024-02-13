@@ -3,7 +3,3 @@
 @tailwind components;
 @tailwind utilities;
 
-
-div.red {
-  @apply bg-red-500;
-}

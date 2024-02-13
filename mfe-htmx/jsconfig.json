@@ -8,12 +8,19 @@
       "@components/*": ["src/components/*"],
       "@layouts/*": ["src/layouts/*"],
       "@pages/*": ["src/pages/*"],
-      "@styles/*": ["src/styles/*"]
-    }
+      "@styles/*": ["src/styles/*"],
+      "@utils/*": ["src/utils/*"]
+    },
+    "plugins": [
+      {
+        "name": "@astrojs/ts-plugin"
+      }
+    ],
   },
   "include": [
     "src/**/*.d.ts",
     "src/**/*.ts",
-    "src/**/*.astro"
-  ]
+    "src/**/*.astro",
+    "src/**/*.js"],
+  "exclude": ["node_modules", "**/node_modules/*", "dist"]
 }
