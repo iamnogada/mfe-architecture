@@ -9,7 +9,7 @@ let categories = [];
 try {
   categories = await (await fetch('http://localhost:3000/categories')).json();
   const todos = await (await fetch('http://localhost:3000/todos')).json();
-
+  
   total = todos.length;
   completedCount = 0;
   categoriesCount = [];
@@ -19,7 +19,7 @@ try {
   });
 
   todos.forEach((todo) => {
-    categoriesCount[todo.categoryId] += 1;
+    categoriesCount[todo.categoryid] += 1;
     if (todo.completed) {
       completedCount += 1;
     }

@@ -13,11 +13,11 @@
     "npm": ">=10.0.0"
   },
   "scripts": {
-    "app:api": "npm run dev --workspace=../mfe-api-mockup",
+    // "app:api": "npm run dev --workspace=../mfe-api-mockup",
     "app:shell": "npm run dev --workspace=../mfe-shell",
     "app:htmx": "npm run dev --workspace=../mfe-htmx",
-    "dev:shell": "concurrently \"npm run app:api\" \"npm run app:shell\"",
-    "dev:htmx": "concurrently \"npm run app:api\" \"npm run app:htmx\"",
+    // "dev:shell": "concurrently \"npm run app:api\" \"npm run app:shell\"",
+    // "dev:htmx": "concurrently \"npm run app:api\" \"npm run app:htmx\"",
     "dev": "concurrently npm:app:*"
   },
   "keywords": [],
