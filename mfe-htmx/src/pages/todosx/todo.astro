@@ -30,7 +30,7 @@ if(!todo){
     <td class="flex justify-center p-2 text-center">
       {todo.completed ? (
         <button 
-        hx-put="apiUpdate"
+        hx-put="/todosx/apiUpdate"
         hx-ext="json-enc,chain-event"
         hx-vars={`id:${todo.id},todo:'${todo.todo}',completed:false`}
         hx-target="#list-container"
@@ -42,7 +42,7 @@ if(!todo){
         </button>
       ) : (
         <button 
-        hx-put="apiUpdate"
+        hx-put="/todosx/apiUpdate"
         hx-ext="json-enc,chain-event"
         hx-vars={`id:${todo.id},todo:'${todo.todo}',completed:true`}
         hx-target="#list-container"

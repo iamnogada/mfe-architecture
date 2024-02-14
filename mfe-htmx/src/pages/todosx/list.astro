@@ -106,9 +106,9 @@ const nextButton =
   <div
     id="list-container"
     class="w-full mx-auto border rounded-lg"
-    hx-get={`./list?page=${page}${filter}`}
+    hx-get={`/todosx/list?page=${page}${filter}`}
     hx-trigger="list-contaienr-refresh from:window, todo-added from:window"
-    hx-push-url={`./main?page=${page}${filter}`}
+    hx-push-url={`main?page=${page}${filter}`}
   >
     <div class="flex items-center justify-between h-12 mx-8">
       <div>
@@ -120,7 +120,7 @@ const nextButton =
         {
           prevButton.status ? (
             <button
-              hx-get={`./list${prevButton.href}`}
+              hx-get={`/todosx/list${prevButton.href}`}
               hx-target="#list-container"
               hx-swap="outerHTML"
               hx-push-url={`main?${prevButton.href}`}
@@ -138,10 +138,10 @@ const nextButton =
           pageButtons.map((item) =>
             item.status === 'active' ? (
               <button
-                hx-get={`./list${item.href}`}
+                hx-get={`/todosx/list${item.href}`}
                 hx-target="#list-container"
                 hx-swap="outerHTML"
-                hx-push-url={`./main${item.href}`}
+                hx-push-url={`main${item.href}`}
                 class="hover:bg-blue-300 w-12 px-3 py-1 text-center text-gray-800 bg-blue-200 border"
               >
                 {item.num}
@@ -160,7 +160,7 @@ const nextButton =
         {
           nextButton.status ? (
             <button
-              hx-get={`./list${nextButton.href}`}
+              hx-get={`/todosx/list${nextButton.href}`}
               hx-target="#list-container"
               hx-swap="outerHTML"
               hx-push-url={`main${nextButton.href}`}

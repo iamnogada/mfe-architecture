@@ -18,7 +18,8 @@
 		}
 	],
 	"settings": {
-		"liveServer.settings.multiRootWorkspaceName": "mfe-htmx"
+		"liveServer.settings.multiRootWorkspaceName": "mfe-htmx",
+		"typescript.tsdk": "node_modules/typescript/lib"
 	},
 	"launch": {
 		"configurations": [

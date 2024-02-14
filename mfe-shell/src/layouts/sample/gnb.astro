@@ -1,55 +1,22 @@
 ---
-export const partial = true;
+// export const partial = true;
 ---
+
 <section class="flex items-center">
-<div class="navbar bg-white pr-8">
-  <div class="navbar-start">
-    <ul class="menu menu-horizontal px-1 text-xl text-slate-600">
-      <li ><a href="/">Sample</a></li>
-      <li ><a>ZMP</a></li>
-      <li ><a>AMDP</a></li>
-      <li ><a>APIM</a></li>
-    </ul>
-  </div>
-  <div class="navbar-center hidden lg:flex"></div>
-  <div class="navbar-end">
-    <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-        <div class="indicator">
-          <i class="fa-regular fa-bell text-xl"></i>
-          <span class="badge badge-sm indicator-item text-white bg-purple-700 border-none">8</span>
-        </div>
+  <nav class="bg-gray-800 text-white p-4 w-full">
+    <div class="container mx-auto flex justify-between items-center">
+      <!-- Left Aligned Menu Items -->
+      <div class="flex items-center space-x-4">
+        <a href="/htmx/main" class="hover:bg-gray-700 px-3 py-2 rounded w-24 text-center">Todosx</a>
+        <a href="#" class="hover:bg-gray-700 px-3 py-2 rounded w-24 text-center">Vue</a>
+        <a href="#" class="hover:bg-gray-700 px-3 py-2 rounded w-24 text-center">iFrame</a>
       </div>
-      <div
-        tabindex="0"
-        class="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow"
-      >
-        <div class="card-body">
-          <span class="font-bold text-lg">8 Items</span>
-          <span class="text-info">Subtotal: $999</span>
-          <div class="card-actions">
-            <button class="btn btn-primary btn-block">View cart</button>
-          </div>
-        </div>
+
+      <!-- Right Aligned Menu Items -->
+      <div class="flex items-center space-x-4">
+        <a href="#" class="hover:bg-gray-700 px-3 py-2 rounded">Blog</a>
+        <a href="#" class="hover:bg-gray-700 px-3 py-2 rounded">Contact</a>
       </div>
     </div>
-    <div class="dropdown dropdown-end">
-        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-          <div class="w-10 rounded-full">
-            <img alt="Tailwind CSS Navbar component" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
-          </div>
-        </div>
-        <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-          <li>
-            <a class="justify-between">
-              Profile
-              <span class="badge">New</span>
-            </a>
-          </li>
-          <li><a>Settings</a></li>
-          <li><a>Logout</a></li>
-        </ul>
-      </div>
-  </div>
-</div>
+  </nav>
 </section>

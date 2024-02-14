@@ -18,6 +18,11 @@ export default defineConfig({
           // For Dev mode, it doesn't work in production
           changeOrigin: true,
           rewrite: path => path.replace(/^\/api/, '')
+        },
+        '/todosx': {
+          target: 'http://localhost:9001',
+          // For Dev mode, it doesn't work in production
+          changeOrigin: true
         }
       }
     }

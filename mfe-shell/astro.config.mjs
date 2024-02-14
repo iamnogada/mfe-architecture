@@ -2,11 +2,7 @@ import { defineConfig } from 'astro/config';
 import node from '@astrojs/node';
 import vue from '@astrojs/vue';
 import react from '@astrojs/react';
-import alpinejs from '@astrojs/alpinejs';
-import htmx from 'astro-htmx';
 import tailwind from '@astrojs/tailwind';
-
-
 
 // https://astro.build/config
 export default defineConfig({
@@ -17,7 +13,7 @@ export default defineConfig({
   adapter: node({
     mode: 'standalone'
   }),
-  integrations: [vue(), react(), alpinejs(), tailwind(), htmx()]
+  integrations: [vue(), react(), tailwind()]
   // vite: {
   //   server: {
   //     proxy: {

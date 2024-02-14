@@ -19,12 +19,19 @@ const { title = 'ZMP' } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="/assets/css/fontawesome.all.css" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <script src="https://cdn.tailwindcss.com" is:inline></script>
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <script defer src="/js/alpinejs.3.x.min.js"></script>
+    <script src="/js/htmx.min.js" is:inline></script>
+    <script src="/js/handlebars.js" is:inline></script>
+    <script src="/js/json-enc.js" is:inline></script>
+    <script src="/js/client-side-templates.js" is:inline></script>
+    <script src="/js/htmx-chain-event.js" is:inline></script>
+    <script src="/js/alpinejs.3.x.min.js" is:inline></script>
   </head>
 </html>
-<body data-theme="zmp">
+<body>
   <div class="h-screen grid grid-rows-[4rem,1fr,3rem] grid-cols-[13rem,1fr]">
     <Logo />
     <GNB />
@@ -38,5 +45,28 @@ const { title = 'ZMP' } = Astro.props;
     <Settings />
     <Footer />
   </div>
+  <div
+    x-init="console.log('layout init')"
+    x-data="{
+            message:'default message',
+            open:false,
+            showError(evt){
+              console.log(JSON.stringify(evt.detail));
+              this.message = evt.detail.message;
+              this.open=true;
+            }
+          }"
+    @onerror.window="showError($event)"
+    :class="{'animate-slideUp':!open}"
+  >
+    <div
+      class="absolute top-0 items-center justify-between hidden w-full px-4 py-2 text-white bg-red-500 rounded-md"
+      :class="{'hidden':!open,'flex':open}"
+    >
+      <span x-text="message"></span>
+      <a href="#" x-on:click="open = ! open"
+        ><i class="fa-solid fa-square-xmark"></i></a
+      >
+    </div>
+  </div>
 </body>
-

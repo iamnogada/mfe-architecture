@@ -31,14 +31,14 @@ try {
 
 ---
 <Partial mode="summary">
-<section hx-get="category/summary" hx-trigger="todo-added from:window, todo-updated from:window">
+<section hx-get="/todosx/category/summary" hx-trigger="todo-added from:window, todo-updated from:window">
   <div class="max-w-lg mx-auto border rounded-lg">
     <div class="bg-info flex items-center justify-between h-16 px-4 text-lg font-bold">
       <p>Category Summary</p>
-      <button  hx-get="./list"
+      <button  hx-get="/todosx/list"
       hx-trigger="click"
       hx-target="#list-container"
-      hx-push-url="./main"
+      hx-push-url="main"
       >
 
         <span class="bg-slate-200 text-neutral w-18 px-3 py-1 text-sm text-center rounded-full">
@@ -52,7 +52,7 @@ try {
           <li class="last:rounded-b-lg flex items-center justify-between h-12 px-4 py-2 mb-0 bg-white border-t">
             <span>{category.name}</span>
             <a href="#" class="inline-block w-10 text-center"
-            hx-get={`./list?categoryid=${category.id}`}
+            hx-get={`/todosx/list?categoryid=${category.id}`}
             hx-target="#list-container"
             hx-swap="outerHTML"
             hx-push-url={`?categoryid=${category.id}`}
