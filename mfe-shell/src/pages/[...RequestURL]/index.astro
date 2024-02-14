@@ -1,9 +1,12 @@
 ---
+// @ts-ignore
 import Layout from '@layouts/SampleLayout.astro';
+// @ts-ignore
 import Page404 from '@pages/404.astro';
 
 const {RequestURL} = Astro.params;
 
+// @ts-ignore
 import {RemoteApps} from 'config/remote';
 
 const findRemoteURL = (inputPath) => {
