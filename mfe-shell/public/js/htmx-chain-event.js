@@ -1,4 +1,6 @@
+/* eslint-disable no-undef */
 (function () {
+  // eslint-disable-next-line no-unused-vars
   var htmxApi;//HtmxInternalApi
 
   function handleErrorEvent (eventName,error){
@@ -18,6 +20,7 @@
   }
   htmx.defineExtension('chain-event', {
     init: function (apiRef) {
+      console.log('==== chain-event init');
       htmxApi = apiRef;
       if (htmx.config.responseTargetUnsetsError === undefined) {
         htmx.config.responseTargetUnsetsError = true;
@@ -33,17 +36,18 @@
       }
     },
     onEvent: function (name, evt) {
+      var value,list
       if (name === 'htmx:afterRequest' && evt.detail.xhr && evt.detail.xhr.status >= 200) {
-        // handleNextEvent(evt);
-        var value = evt.detail.elt.getAttribute('hx-publish') || "";
-        var list = value.split(/[\s,]/);
+        console.log('==== chain-event htmx:afterRequest');
+        value = evt.detail.elt.getAttribute('hx-publish') || "";
+        list = value.split(/[\s,]/);
         list.forEach((eventName)=>{
           handleNextEvent(eventName);
         });
         return true;
       }else if(name === 'htmx:responseError'){
-        var value = evt.detail.elt.getAttribute('hx-publish-error') || "";
-        var list = value.split(/[\s,]/);
+        value = evt.detail.elt.getAttribute('hx-publish-error') || "";
+        list = value.split(/[\s,]/);
         list.forEach((eventName)=>{
           handleErrorEvent(eventName,evt.detail.error);
         });

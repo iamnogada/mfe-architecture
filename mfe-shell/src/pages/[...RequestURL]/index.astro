@@ -1,0 +1,29 @@
+---
+import Layout from '@layouts/SampleLayout.astro';
+import Page404 from '@pages/404.astro';
+
+const {RequestURL} = Astro.params;
+
+import {RemoteApps} from 'config/remote';
+
+const findRemoteURL = (inputPath) => {
+  // Find the first app where the input path starts with the app's pathURL
+  const app = RemoteApps.find(app => inputPath.startsWith(app.pathURL));
+  return app ? app.remoteURL : null; // Return the remoteURL if found, otherwise return null
+};
+console.log(`RequestURL: ${RequestURL}`);
+
+const remoteURL = findRemoteURL(`/${RequestURL}`);
+
+console.log(`remoteURL: ${remoteURL}`);
+
+---
+<Layout title="vue">
+{ !!remoteURL ? (
+  <div id="app-container"
+    hx-get={remoteURL}
+    hx-trigger="load"
+    hx-swap="innerHTML"
+  ></div>
+  ):(<Page404 />)}
+</Layout>
