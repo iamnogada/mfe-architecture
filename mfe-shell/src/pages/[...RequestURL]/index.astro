@@ -14,11 +14,16 @@ const findRemoteURL = (inputPath) => {
   const app = RemoteApps.find(app => inputPath.startsWith(app.pathURL));
   return app ? app.remoteURL : null; // Return the remoteURL if found, otherwise return null
 };
-console.log(`RequestURL: ${RequestURL}`);
 
-const remoteURL = findRemoteURL(`/${RequestURL}`);
+let remoteURL = findRemoteURL(`/${RequestURL}`);
 
 console.log(`remoteURL: ${remoteURL}`);
+
+const url = new URL(Astro.request.url);
+const params = new URLSearchParams(url.search);
+console.log(`params: ${url.searchParams}`);
+console.log(`search: ${url.search}`);
+remoteURL = remoteURL + url.search;
 
 ---
 <Layout title="vue">
