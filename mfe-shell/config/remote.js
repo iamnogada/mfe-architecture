@@ -35,6 +35,27 @@ const RemoteApps =[
     pathURL:"/todos/main",
     remoteURL:"http://localhost:9002/bundle.js",
     type:"vue"
+  },
+  {
+    name: "todos-category",
+    display: "Todos",
+    pathURL:"/todos/category",
+    remoteURL:"http://localhost:9002/bundle.js",
+    type:"vue"
+  },
+  {
+    name: "todos-todos",
+    display: "Todos",
+    pathURL:"/todos/todos",
+    remoteURL:"http://localhost:9002/bundle.js",
+    type:"vue"
+  },
+  {
+    name: "todos-register",
+    display: "Todos",
+    pathURL:"/todos/register",
+    remoteURL:"http://localhost:9002/bundle.js",
+    type:"vue"
   }
   // {
   //   name: "todos",

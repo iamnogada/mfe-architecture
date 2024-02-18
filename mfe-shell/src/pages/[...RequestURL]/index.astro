@@ -14,6 +14,8 @@ import {RemoteApps} from 'config/remote';
 
 const findRemoteURL = (inputPath) => {
   // Find the first app where the input path starts with the app's pathURL
+  console.log(`inputPath: ${inputPath}`);
+  
   return RemoteApps.find(app => inputPath.startsWith(app.pathURL));
   // return app ; // Return the remoteURL if found, otherwise return null
 };
