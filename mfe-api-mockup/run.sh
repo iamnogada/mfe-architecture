@@ -4,6 +4,7 @@ docker run -d \
   -e PGRST_DB_URI=postgres://admin:cloudzcp12%23%24@zmp-pgsql:5432/zmp \
   -e PGRST_DB_SCHEMA=api \
   -e PGRST_DB_ANON_ROLE=web_anon \
+  -e PGRST_LOG_LEVEL=info \
   -p 3000:3000 \
   postgrest/postgrest
 

@@ -15,6 +15,9 @@
 		{
 			"name": "mfe-htmx",
 			"path": "mfe-htmx"
+		},
+		{
+			"path": "mfe-vue"
 		}
 	],
 	"settings": {

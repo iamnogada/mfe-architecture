@@ -1,0 +1,13 @@
+---
+const { remoteURL = '/' } = Astro.props;
+
+console.log('htmx remoteURL', remoteURL);
+---
+
+<div
+  id="app-container"
+  hx-get={remoteURL}
+  hx-trigger="load"
+  hx-swap="innerHTML"
+>
+</div>

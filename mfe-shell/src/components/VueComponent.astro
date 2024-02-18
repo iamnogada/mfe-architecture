@@ -1,0 +1,38 @@
+---
+const { remoteURL = '/' } = Astro.props;
+---
+
+<!-- Store the message prop as a data attribute. -->
+<astro-greet id="app" data-message={remoteURL}>
+  hello
+</astro-greet>
+
+<script>
+  class AstroGreet extends HTMLElement {
+    constructor() {
+      super();
+      console.log('AstroGreet constructed');
+      // Read the message from the data attribute.
+      // const message = this.dataset.message;
+      console.log('AstroGreet remoteURL', this.dataset.message);
+      // import('http://localhost:9002/src/main.js').then((module) => {
+      //   const setup = module.default;
+      //   setup('todos');
+      // });
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.textContent = `
+        import('${this.dataset.message}').then((module) => {
+          const setup = module.default;
+          console.log('AstroGreet module', JSON.stringify(module));
+          console.log('AstroGreet setup !!');
+          setup('todos');
+        });
+      `;
+      // script.src = 'http://localhost:9002/src/main.js';
+      document.body.appendChild(script); // Appending to the body
+
+    }
+  }
+  customElements.define('astro-greet', AstroGreet);
+</script>

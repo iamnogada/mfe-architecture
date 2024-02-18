@@ -1,0 +1,22 @@
+---
+// @ts-ignore
+import Layout from '@layouts/SampleLayout.astro';
+---
+<Layout title="vue">
+<div id="app">none</div>
+</Layout>
+<script type="module">
+  // Dynamically import the Vue component at runtime
+  import('http://localhost:9002/src/main.js').then((module) => {
+    const setup = module.default;
+    setup("todos");
+    // Initialize and mount the Vue component dynamically
+    // Note: This requires Vue to be loaded and available in the global scope,
+    // or you need to initialize a new Vue instance here if Vue supports direct component mounting
+
+    // // Example assuming Vue is globally available (e.g., via a script tag in your HTML template)
+    // new Vue({
+    //   render: (h) => h(VueComponent),
+    // }).$mount('#remote-vue-component');
+  });
+</script>

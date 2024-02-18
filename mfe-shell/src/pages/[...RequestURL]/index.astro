@@ -3,35 +3,49 @@
 import Layout from '@layouts/SampleLayout.astro';
 // @ts-ignore
 import Page404 from '@pages/404.astro';
+import HtmxComponent from '@components/HtmxComponent.astro';
+import VueComponent from '@components/VueComponent.astro';
 
 const {RequestURL} = Astro.params;
+console.log(`======RequestURL: ${RequestURL}`);
 
 // @ts-ignore
 import {RemoteApps} from 'config/remote';
 
 const findRemoteURL = (inputPath) => {
   // Find the first app where the input path starts with the app's pathURL
-  const app = RemoteApps.find(app => inputPath.startsWith(app.pathURL));
-  return app ? app.remoteURL : null; // Return the remoteURL if found, otherwise return null
+  return RemoteApps.find(app => inputPath.startsWith(app.pathURL));
+  // return app ; // Return the remoteURL if found, otherwise return null
 };
 
-let remoteURL = findRemoteURL(`/${RequestURL}`);
+let app = findRemoteURL(`/${RequestURL}`);
+app = app ? app : {
+    name: "Todo",
+    display: "Todo",
+    pathURL:"/htmx/todo",
+    remoteURL:"/todosx/list",
+    type:"htmx"
+  };
+let remoteURL = app ? app.remoteURL : null;
 
-console.log(`remoteURL: ${remoteURL}`);
 
 const url = new URL(Astro.request.url);
 const params = new URLSearchParams(url.search);
+console.log(`remoteURL: ${remoteURL}`);
 console.log(`params: ${url.searchParams}`);
 console.log(`search: ${url.search}`);
-remoteURL = remoteURL + url.search;
+console.log(`app: ${app.type === 'htmx'}`);
 
+remoteURL = remoteURL + url.search;
+const isHtmx = app.type === 'htmx';
+const isVue = app.type === 'vue';
+const isReact = app.type === 'react';
 ---
 <Layout title="vue">
-{ !!remoteURL ? (
-  <div id="app-container"
-    hx-get={remoteURL}
-    hx-trigger="load"
-    hx-swap="innerHTML"
-  ></div>
-  ):(<Page404 />)}
+  {isHtmx && (
+    <HtmxComponent remoteURL={remoteURL} />
+  )}
+  {isVue && (
+    <VueComponent remoteURL={remoteURL} />
+  )}
 </Layout>
