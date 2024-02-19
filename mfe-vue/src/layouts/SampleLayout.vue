@@ -12,9 +12,6 @@
       <router-view>
       </router-view>
     </main>
-    <footer>
-      Your footer content here
-    </footer>
   </div>
 </template>
 
