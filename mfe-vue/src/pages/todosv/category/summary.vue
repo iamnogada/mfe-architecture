@@ -22,7 +22,6 @@
       </ul>
     </div>
   </section>
-  <button @click="handle">click</button>
 </template>
 <script setup>
 import { onBeforeMount, computed, onMounted, onUnmounted } from "vue";
