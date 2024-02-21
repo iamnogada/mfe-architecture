@@ -7,11 +7,11 @@
         </span>
       </div>
       <div class="inline-flex">
-        <a v-if="pageInfo.prevButton.status"
-          :href="pageInfo.prevButton.href"
+        <router-link v-if="pageInfo.prevButton.status"
+          :to="pageInfo.prevButton.href"
           class="hover:bg-gray-300 w-16 px-3 py-1 text-right text-gray-800 bg-gray-200 rounded-l">
           Prev
-        </a>
+        </router-link>
         <div v-else class=" w-16 px-3 py-1 text-gray-400 bg-gray-200 border border-r-0 rounded-l">
           Prev
         </div>
@@ -22,9 +22,9 @@
             </div>
           </template>
           <template v-else-if="item.status == 'active'">
-            <a :href="item.link" class="hover:bg-blue-300 w-12 px-3 py-1 text-center text-gray-800 bg-blue-200 border">
+            <router-link :to="item.link" class="hover:bg-blue-300 w-12 px-3 py-1 text-center text-gray-800 bg-blue-200 border">
               {{ item.num }}
-            </a>
+            </router-link>
           </template>
           <template v-else>
             <div class="w-12 px-3 py-1 font-bold text-center text-gray-800 bg-blue-200 border">
@@ -63,7 +63,7 @@
 
 <script setup>
 import { todoStore } from '@/store/store.js';
-import { onBeforeMount, reactive, ref } from 'vue';
+import { onBeforeMount, reactive, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router'
 import Todo from '@/pages/todosv/todo.vue';
 
@@ -80,10 +80,11 @@ const pageInfo = reactive({
   nextButton: { status: false, href: '' }
 });
 
+const route = useRoute();
 
 const getTodo = async () => {
   const size = 10;
-  const route = useRoute();
+  // const route = useRoute();
   let page = route.query?.page || 1;
   page = Math.max(1, page);
   let categoryid = route.query?.categoryid || '';
@@ -103,9 +104,9 @@ const getTodo = async () => {
 
 
   pageInfo.prevButton.status = page > 10;
-  pageInfo.prevButton.href = page > 10 ? `?page=${startpage - 1}${filter}` : "#";
+  pageInfo.prevButton.href = page > 10 ? `main??page=${startpage - 1}${filter}` : "#";
   pageInfo.nextButton.status = page < (pageInfo.totalPage - 9);
-  pageInfo.nextButton.href = page < (pageInfo.totalPage - 9) ? `?page=${startpage + 10}${filter}` : "#";
+  pageInfo.nextButton.href = page < (pageInfo.totalPage - 9) ? `main??page=${startpage + 10}${filter}` : "#";
   console.log(pageInfo.nextButton.href);
 
   pageInfo.pageButtons = Array(10)
@@ -122,11 +123,15 @@ const getTodo = async () => {
         (i + startpage) == page
           ? '#'
           : (i + startpage) <= pageInfo.totalPage
-            ? `?page=${i + startpage}${filter}`
+            ? `main?page=${i + startpage}${filter}`
             : '#'
     }));
 }
 
+watch(() => route.query, async (query) => {
+  console.log(`query changed: ${query}`);
+  await getTodo();
+});
 onBeforeMount(async () => {
   await getTodo();
 })

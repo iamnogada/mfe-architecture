@@ -20,11 +20,8 @@
           id="categoryid"
           class="focus:ring-blue-500 focus:border-blue-500 w-3/4 p-2 border border-gray-300 rounded"
         >
-          {
-            categories.map((category) => (
-              <option value={category.id}>{category.name}</option>
-            ))
-          }
+              <option value=-1>-select-</option>
+              <option v-for="category in categoryStore.categories" :key="category.id" :value="category.id">{{category.name}}</option>
         </select>
       </div>
     </div>
@@ -35,7 +32,13 @@
 </template>
 
 <script setup>
+import { onBeforeMount, reactive } from "vue";
+import {categoryStore} from "@/store/store.js";
 
+
+onBeforeMount(async () => {
+  await categoryStore.get();
+});
 </script>
 
 <style>
