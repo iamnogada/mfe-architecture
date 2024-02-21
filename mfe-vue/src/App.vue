@@ -1,6 +1,6 @@
 <script setup>
-import { defineComponent } from 'vue';
-import {store} from '@/store/store.js';
+// import { defineComponent } from 'vue';
+// import {store} from '@/store/store.js';
 
 </script>
 

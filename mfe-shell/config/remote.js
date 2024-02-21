@@ -33,7 +33,8 @@ const RemoteApps =[
     name: "todos",
     display: "Todos",
     pathURL:"/todos/main",
-    remoteURL:"http://localhost:9002/bundle.js",
+    // remoteURL:"http://localhost:9002/bundle.js",
+    remoteURL:"http://localhost:9002/src/main.js",
     type:"vue"
   },
   {
@@ -53,7 +54,7 @@ const RemoteApps =[
   {
     name: "todos-register",
     display: "Todos",
-    pathURL:"/todos/register",
+    pathURL:"/todos/todos",
     remoteURL:"http://localhost:9002/bundle.js",
     type:"vue"
   }

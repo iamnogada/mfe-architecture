@@ -22,10 +22,14 @@ const getTodos = async (paramSort, paramOffset, paramLimit, paramFilter) => {
     const response = await fetch(url, {
       headers: { Prefer: 'count=exact' }
     });
-    
+
+    if (!response.ok) {
+      throw new Error(
+        'Network resCategories was not ok: ' + response.statusText
+      );
+    }
     const data = await response.json();
-    if(!response.ok) throw new Error(data.message);
-    
+
     const range = response.headers.get('Content-Range');
 
     const total = parseInt(range.split('/').pop());
@@ -91,7 +95,7 @@ const prevButton =
         href: '#'
       };
 const nextButton =
-  page < totalPage - 9
+  page < (totalPage - 9)
     ? {
         status: true,
         href: `?page=${startpage + 10}${filter}`

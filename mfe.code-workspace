@@ -18,6 +18,9 @@
 		},
 		{
 			"path": "mfe-vue"
+		},
+		{
+			"path": "doc"
 		}
 	],
 	"settings": {

@@ -8,10 +8,10 @@
         <router-link to="/category">Category</router-link>
       </div>
     </header>
-    <main>
+    <v-sheet class="flex-grow-1">
       <router-view>
       </router-view>
-    </main>
+    </v-sheet>
   </div>
 </template>
 
