@@ -3,6 +3,11 @@ env:
   AppName: "sample"
 on:
   workflow_dispatch:
+    inputs:
+      custom_message:
+        description: "Optional custom message"
+        required: false
+        default: "Triggered manually"
 jobs:
   label_issue:
     runs-on: ubuntu-latest
