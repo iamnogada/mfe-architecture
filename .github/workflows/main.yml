@@ -1,21 +1,17 @@
-name: "Action Sample"
-env:
-  AppName: "sample"
+name: Manual Trigger Workflow
 on:
   workflow_dispatch:
-    # inputs:
-    #   branch:
-    #     description: "Branch to run the workflow on"
-    #     default: "dev"
-    #     required: false
+    inputs:
+      branch:
+        description: 'The branch to build'
+        required: true
+      environment:
+        description: 'The environment to deploy to'
+        required: false
 jobs:
   label_issue:
     runs-on: ubuntu-latest
     steps:
       - name: "sss"
-        uses: actions/checkout@v3
-        with:
-          ref: main
         run: |
           echo "Hello"
-  
