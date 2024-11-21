@@ -2,7 +2,7 @@ name: Manual Trigger Workflow
 on:
   workflow_dispatch:
     branches:
-    - main
+    - dev
 jobs:
   label_issue:
     runs-on: ubuntu-latest
