@@ -4,10 +4,10 @@ env:
 on:
   workflow_dispatch:
     inputs:
-      custom_message:
-        description: "Optional custom message"
+      branch:
+        description: "Branch to run the workflow on"
+        default: "dev"
         required: false
-        default: "Triggered manually"
 jobs:
   label_issue:
     runs-on: ubuntu-latest
